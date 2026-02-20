@@ -1,0 +1,23 @@
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Transformed by: SVG Repo Mixer Tools -->
+<svg height="800px" width="800px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 511.88 511.88" xml:space="preserve" fill="#000000">
+
+<g id="SVGRepo_bgCarrier" stroke-width="0"/>
+
+<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/>
+
+<g id="SVGRepo_iconCarrier">
+<circle style="fill:#7d8faa;" cx="255.94" cy="255.94" r="115"/>
+<defs>
+  <clipPath id="austriaClip">
+    <circle cx="255.94" cy="255.94" r="115"/>
+  </clipPath>
+</defs>
+<g clip-path="url(#austriaClip)">
+  <!-- Austria flag (red-white-red), ratio 3:2 -->
+  <rect x="140.94" y="179.274" width="230" height="153.333" fill="#ED2939"/>
+  <rect x="140.94" y="230.385" width="230" height="51.111" fill="#FFFFFF"/>
+</g> <path style="fill:#1F6F50;" d="M222.468,65.629c-166.642-31.559-141.06,113.207-58.815,75.79 C201.429,124.324,201.07,77.224,222.468,65.629z"/> <path style="fill:#6E5B3F;" d="M206.689,71.965c-39.09,3.586-89.896,34.428-105.197,84.995l-5.379-1.195 c18.649-53.196,60.13-81.169,110.577-83.68V71.965z"/> <path style="fill:#1F6F50;" d="M66.466,228.445c-81.408,148.711,64.075,169.152,53.914,79.376 C115.717,266.579,70.889,252.473,66.466,228.445z"/> <path style="fill:#6E5B3F;" d="M67.661,245.54c-8.607,38.373,5.021,96.112,48.295,126.356l-2.869,4.782 c-44.828-34.189-58.695-82.245-45.426-131.018V245.54z"/> <path style="fill:#1F6F50;" d="M173.217,427.244c116.315,123.487,180.629-8.607,92.167-26.777 C224.74,392.099,197.364,430.472,173.217,427.244z"/> <path style="fill:#6E5B3F;" d="M189.833,431.428c33.83,20.083,92.884,24.984,135.083-6.933l3.586,4.184 C282.12,460.716,232.151,459.043,189.833,431.428z"/> <path style="fill:#1F6F50;" d="M395.207,387.198c153.373-72.443,47.578-174.532,2.989-95.873 C377.754,327.427,405.727,365.202,395.207,387.198z"/> <path style="fill:#6E5B3F;" d="M404.292,372.614c29.527-25.941,52.479-80.691,35.145-130.54l5.021-2.152 c16.138,54.033-0.956,101.013-40.286,132.692H404.292z"/> <path style="fill:#1F6F50;" d="M425.69,163.654c-21.518-168.196-151.221-99.22-90.254-32.516 C363.409,161.741,407.998,146.798,425.69,163.654z"/> <path style="fill:#6E5B3F;" d="M414.693,150.504c-15.541-36.102-60.488-74.834-113.326-73.877l-0.478-5.499 c56.424,1.315,95.753,32.157,113.804,79.257V150.504z"/> </g>
+
+</svg>
