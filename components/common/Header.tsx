@@ -29,13 +29,12 @@ type HeaderProps = {
 };
 
 export default function Header({
-  brand = { label: "Brewcycle", href: "/" },
   nav = [
     { label: "Home", href: "/" },
     { label: "Kontakt", href: "/contact" },
     { label: "Team", href: "/team" },
   ],
-  cta = { label: "Start Survey", href: "/survey" },
+  cta = { label: "Jetzt Kaufen", href: "/survey" },
 }: HeaderProps) {
   const pathname = usePathname();
   const [open, setOpen] = React.useState(false);
@@ -43,7 +42,7 @@ export default function Header({
   const isActive = (href: string) => pathname === href;
 
   return (
-    <header className="sticky top-0 z-50 border-b bg-background/85 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 bg-[#F8F2E8] shadow-xl backdrop-blur-[1px]">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
         {/* Brand */}
         <Link href="/" className="flex items-center gap-2">
@@ -56,7 +55,7 @@ export default function Header({
         </Link>
 
         {/* Desktop nav */}
-        <div className="hidden md:flex">
+        <div className="hidden  font-sans tracking-wider md:flex  rounded-2xl">
           <NavigationMenu>
             <NavigationMenuList className="gap-1">
               {nav.map((item) => (
@@ -65,7 +64,7 @@ export default function Header({
                     <Link
                       href={item.href}
                       className={[
-                        "inline-flex h-10 items-center rounded-xl px-3 text-sm transition-colors",
+                        "inline-flex  items-center rounded-xl px-3 text-sm transition-colors",
                         isActive(item.href)
                           ? "bg-muted text-foreground font-medium"
                           : "text-muted-foreground hover:bg-muted hover:text-foreground",
@@ -81,8 +80,10 @@ export default function Header({
         </div>
         {/* Desktop CTA */}
         <div className="hidden md:flex">
-          <Button asChild className="rounded-xl">
-            <Link href={cta.href}>{cta.label}</Link>
+          <Button asChild className="rounded-xl bg-[#3d571c]">
+            <Link className="text-white  tracking-tight" href={cta.href}>
+              {cta.label}
+            </Link>
           </Button>
         </div>
 
@@ -98,10 +99,14 @@ export default function Header({
             <SheetContent side="right" className="w-[320px]">
               <SheetHeader>
                 <SheetTitle className="flex items-center gap-2">
-                  <span className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-primary text-primary-foreground text-sm font-semibold">
-                    B
-                  </span>
-                  <span>{brand.label}</span>
+                  <div>
+                    <Image
+                      width={150}
+                      height={150}
+                      alt="Picture of the author"
+                      src="./logos/LogoBrew.svg"
+                    />
+                  </div>
                 </SheetTitle>
               </SheetHeader>
 

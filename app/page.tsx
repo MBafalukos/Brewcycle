@@ -1,18 +1,33 @@
 "use client";
-import { Droplets, Leaf, Sprout, X, Recycle, MapPinCheck } from "lucide-react";
+import {
+  Leaf,
+  Sprout,
+  X,
+  ChevronsDown,
+  Wheat,
+  Truck,
+  CirclePile,
+} from "lucide-react";
 import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
+
 import { Button } from "@/components/ui/button";
-import banner from "../public/icons/sprout-svgrepo-com.svg";
+import banner from "../public/team/bg.png";
+import farm from "../public/team/farm.png";
+/* Steps */
 import step1Icon from "../public/icons/grain-veg-svgrepo-com.svg";
 import step2Icon from "../public/icons/wheelbarrow-construction-svgrepo-com.svg";
 import step3Icon from "../public/icons/microorganism-svgrepo-com.svg";
 import step4Icon from "../public/icons/sprout-svgrepo-com (2).svg";
-import card2Icon from "../public/icons/austria-svgrepo-com.svg";
-import card1Icon from "../public/icons/recycle-4-svgrepo-com.svg";
-import card3Icon from "../public/icons/earth-svgrepo-com.svg";
+/* Cards */
+import card2Icon from "../public/icons/circle-number-2-svgrepo-com.svg";
+import card1Background from "../public/icons/flat-design-circular-economy-infographic-template.png";
+import card2Background from "../public/icons/card2background.png";
+import card3Background from "../public/icons/flat-design-circular-economy-infographic-template.png";
+import card1Icon from "../public/icons/circle-number-1-svgrepo-com.svg";
+import card3Icon from "../public/icons/circle-number-3-svgrepo-com.svg";
+/* Logos */
 import logo1 from "../public/logos/Donaulandkompost.svg";
 import logo2 from "../public/logos/AWS.svg";
 import logo3 from "../public/logos/Smartup.png";
@@ -42,46 +57,55 @@ type Cards = {
   title: string;
   desc: string;
   more: string;
+  background: StaticImageData;
 };
 
 const cards: Cards[] = [
   {
     id: "1",
     icon: card1Icon,
-    title: "Kreislaufwirtschaft & Nachhaltigkeit",
+    background: card1Background,
+    title: "KREISLAUFWIRTSCHAFT & NACHHALTIGKEIT",
     desc: "Wir verwandeln Nebenprodukten in Premium-Pflanzennahrung.",
-    more: "Jeder Sack BrewCycle-Dünger holt das Beste aus Brauerei-Nebenprodukten heraus. Unser Kreislaufsystem führt Treber und Hopfen regionaler Brauereien einer neuen Bestimmung zu: Als natürlicher, nährstoffreicher Dünger für gesundes Gedeihen im Garten. Nachhaltigkeit einfach gemacht.",
+    more: "Jeder Sack BrewCycle-Dünger holt das Beste aus Brauerei- Nebenprodukten heraus. Unser Kreislaufsystem führt Treber und Hopfen regionaler Brauereien einer neuen Bestimmung zu: Als natürlicher, nährstoffreicher Dünger für gesundes Gedeihen im Garten. Nachhaltigkeit einfach gemacht.",
   },
   {
     id: "2",
     icon: card2Icon,
-    title: "Regional aus Osterreich",
+    background: card2Background,
+    title: "REGIONAL AUS ÖSTERREICH",
     desc: "100% heimische Rohstoffe für höchste Qualität",
     more: "Durch die exklusive Zusammenarbeit mit österreichischen Brauereien schaffen wir Mehrwert direkt vor Ort. So leisten wir einen wertvollen Beitrag zur Stärkung der heimischen Wirtschaft und unserer Gemeinschaft.",
   },
   {
     id: "3",
+    background: card3Background,
     icon: card3Icon,
-    title: "Pflanzenbasiert & Vegan",
+    title: "PflANZENBASIERT & VEGAN",
     desc: "100% heimische Rohstoffe für höchste Qualität",
     more: "Im Gegensatz zu vielen Düngern, die tierische Inhaltsstoffe enthalten, ist Brewcycle vollständig pflanzenbasiert. Die Rezeptur vereint verschiedene Nebenprodukte wie landwirtschaftliches Stroh und Melasse aus der Zuckerherstellung zu einem kraftvollen Mix. So entsteht ein nachhaltiges Kreislauf-Produkt aus unterschiedlichen Industrien, ideal für ökologisches und veganes Gärtnern",
   },
 ];
 const features: Feature[] = [
   {
-    icon: Droplets,
-    title: "Slow-Release Formula",
-    desc: "Nutrients release gradually over weeks, feeding plants steadily without burning",
+    icon: Wheat,
+    title: "URSPRUNG ",
+    desc: "Die Geschichte beginnt bei lokalen Brauereien und landwirtschaftlichen Partnern, bei denen wertvolle Nebenprodukte entstehen",
+  },
+  {
+    icon: Truck,
+    title: "SAMMLUNG",
+    desc: "Alle Zutaten werden dann direkt vor Ort gesammelt und für die Weiterverarbeitung vorbereitet",
+  },
+  {
+    icon: CirclePile,
+    title: "NATÜRLICHE AUFBEREITUNG",
+    desc: "Auf ganz natürlichem Weg werden diese Schätze der Natur zu einem nährstoffreichen Mix für den Garten verbunden.",
   },
   {
     icon: Sprout,
-    title: "Rich in Nitrogen",
-    desc: "Essential for lush, green growth and strong plant development",
-  },
-  {
-    icon: Leaf,
-    title: "Improves Soil Health",
-    desc: "Organic matter enriches soil structure and promotes beneficial microbes",
+    title: "WACHSTUM",
+    desc: "Der fertige Dünger lässt Pflanzen gesund gedeihen. So findet alles seinen Weg zurück zur Erde und der Kreis der Natur schließt sich.",
   },
 ];
 const steps: Step[] = [
@@ -111,94 +135,93 @@ export default function Home() {
   const [activeId, setActiveId] = useState<string | null>(null);
 
   return (
-    <main className="bg-white">
-      <section className="relative w-full overflow-hidden">
-        <div className="relative max-h-svh">
-          <Card className=" sm:my-5  border-none shadow-none mx-auto max-w-6xl px-6 py-6 sm:py-10">
-            <CardContent className="grid gap-10  sm:p-10 lg:grid-cols-2 lg:items-center">
-              {/* Left */}
-              <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
-                <h1 className="text-4xl font-semibold tracking-tight  sm:text-5xl">
-                  Von der Brauerei zum blühenden
-                </h1>
+    <main className="bg-[#F8F2E8]">
+      <section className="bg-gradient-to-b from-[#ddc5a9] to-[#F8F2E8] relative flex flex-col sm:flex-row   justify-center min-h-svh items-center  w-full justify-center overflow-hidden">
+        <div className=" z-20  px-10  text-center sm:text-left  sm:justify-start flex flex-col  ">
+          <h1 className="text-6xl mt-10  text-[#9BAD21] font-semibold tracking-tight font-silly  sm:text-7xl">
+            VON DER BRAUEREI ZUM <br />{" "}
+            <span className="text-[#3d571c]"> BLÜHENDEN</span>
+          </h1>
 
-                <p className="mt-5 max-w-xl text-base leading-relaxed  sm:text-lg">
-                  Premium Bio-Dünger aus Brauerei-Nebenprodukten. Gib deinem
+          <Card className=" sm:my-5 w-full relative bg-transparent backdrop-blur-[1px] border-none shadow-none mx-auto  ">
+            <CardContent>
+              <div className=" items-center justify-evenly  relative ">
+                <p className="mt-5 max-w-xl  text-base font-sans  text-[#3d571c] leading-relaxed  sm:text-lg">
+                  Premium Bio-Dünger aus Brauerei- Nebenprodukten. Gib deinem
                   Garten die Nährstoffe, die er braucht, und reduziere
                   gleichzeitig Abfall.
                 </p>
-                <p className="mt-2 ">
-                  Nachhaltige & natürliche Pflanzenernährung.
+                <p className="mt-2 text-[#9BAD21] ">
+                  NACHHALTIGE & NATÜRLICHE PFLANZENERNÄHRUNG.
                 </p>
 
                 {/* CTA */}
-                <div className="mt-8 flex  items-center gap-3 flex-row lg:items-start">
+                <div className="mt-8 flex  font-sans items-center gap-5 flex-col xl:flex-row lg:items-center">
                   <Button
                     asChild
-                    className="h-11 rounded-xl bg-[#1A4314] px-6 text-white hover:bg-[#05472A]/90 "
+                    className="h-11 rounded-xl  bg-[#3d571c] px-6 text-white hover:bg-[#3d571c]/90 "
                   >
                     <a href="/survey">Jetzt kaufen</a>
                   </Button>
-
-                  <Button
-                    asChild
-                    variant="ghost"
-                    className="h-11 rounded-xl px-6 text-black hover:bg-white/10"
-                  >
-                    <a href="/learn-more">Mehr erfahren</a>
-                  </Button>
+                  <div className=" flex  gap-x-2 items-center justify-center  text-[8px] sm:text-[10px] md:text-[12px] lg:text-[14px] text-[#6B6B6B] ">
+                    <div className="w-fit px-2 bg-[#F8F2E8] rounded-lg  items-center gap-2">
+                      <p>100% Bio</p>
+                    </div>
+                    <div className="w-fit px-2 bg-[#F8F2E8]  rounded-lg  items-center gap-2">
+                      Made in Austria
+                    </div>
+                    <div className="w-fit px-2 bg-[#F8F2E8]  rounded-lg  items-center gap-2">
+                      <p className="">Zero Waste</p>
+                    </div>
+                  </div>
                 </div>
 
                 {/* Badges */}
-                <div className="mt-6 flex items-center justify-between w-full gap-x-2 text-[12px] text-[#6B6B6B] lg:justify-start">
-                  <div className="flex items-center gap-2">
-                    <Leaf className="h-4 w-4 text-[#2F6B25]" />
-                    100% Bio
-                  </div>
-                  <div className="flex  items-center gap-2">
-                    <MapPinCheck className="h-4 w-4 text-[#2F6B25]" />
-                    Made in Austria
-                  </div>
-                  <div className="flex  items-center gap-2">
-                    <Recycle className="h-4 w-4 text-[#2F6B25]" />
-                    Zero Waste
-                  </div>
-                </div>
               </div>
 
               {/* Right */}
-              <div className="relative mx-auto w-full max-w-md lg:max-w-none">
-                <AspectRatio
-                  ratio={4 / 5}
-                  className="overflow-hidden rounded-3xl  "
-                >
-                  <Image
-                    src={banner}
-                    alt="Leaf"
-                    fill
-                    priority
-                    className="object-contain"
-                  />
-                </AspectRatio>
-              </div>
             </CardContent>
           </Card>
+          <Button
+            asChild
+            variant="outline"
+            className="mx-auto bg-inherit border-none w-fit text-[#9BAD21] shadow-none text-xl font-silly tracking-extrawider  z-20 hover:bg-white"
+          >
+            <a href="/learn-more">
+              Mehr erfahren
+              <ChevronsDown className="h-4 w-4 text-[#9BAD21]  " />
+            </a>
+          </Button>
+        </div>
+
+        <div className="">
+          <Image
+            src={banner}
+            alt="Leaf"
+            width={550}
+            height={550}
+            priority
+            className="object-cover "
+          />
         </div>
       </section>
 
-      <section className="mx-auto  px-6 w-screen h-full  bg-[#F4F1E8] ">
-        <div className=" items-center justify-center flex flex-col">
-          <div className="text-center">
-            <h2 className="font-serif text-3xl pb-10 tracking-tight text-[#1f1f1f] sm:text-4xl">
-              Unser Versprechen an die Natur
-            </h2>
-          </div>
-          <div className="text-center text-[#6B6B6B] pb-10">
+      <section className="mx-auto py-20 bg-[#F8F2E8] bg-cover px-6   ">
+        <div className=" items-center relative justify-center h-full  text-center flex flex-col">
+          <h2 className="font-serif text-5xl py-10 tracking-tight font-silly text-[#1f1f1f] sm:text-6xl">
+            UNSER VERSPRECHEN AN DIE NATUR
+          </h2>
+
+          <div className="text-center font-sans text-[#6B6B6B] pb-10">
             Bei uns steht der Kreislauf der Natur im Mittelpunkt. Alles, was die
-            Erde hervorbringt, soll zu ihr zurückkehren. Wir entwickeln
-            Produkte, die den Garten stärken und die Umwelt schützen.
+            Erde hervorbringt, soll zu ihr zurückkehren.
+            <br />{" "}
+            <p>
+              Wir entwickeln Produkte, die den Garten stärken und die Umwelt
+              schützen.
+            </p>
           </div>
-          <div className="flex flex-col sm:flex-row gap-5">
+          <div className="flex flex-col  sm:flex-row gap-12 mb-20">
             {cards.map((c) => {
               const isOpen = activeId === c.id;
 
@@ -206,8 +229,8 @@ export default function Home() {
                 <div
                   key={c.id}
                   className="
-          relative w-full rounded-xl p-4 bg-[#FAF8F2] border border-[#E6E2D9]
-          transition-transform duration-300 ease-out
+          relative w-full rounded-xl p-4 bg-white border border-[#E6E2D9] mb-5
+          transition-transform duration-300 ease-out relative z-20 
           hover:-translate-y-0.5 
         "
                 >
@@ -218,7 +241,7 @@ export default function Home() {
                       "transition-all duration-300 ease-out ",
                       isOpen
                         ? "opacity-100 scale-100 pointer-events-auto h-full"
-                        : "opacity-0 scale-[0.98] pointer-events-none ",
+                        : "opacity-0 scale-[0.65] pointer-events-none ",
                     ].join(" ")}
                   >
                     <div className="relative flex items-start justify-between p-4 gap-3">
@@ -245,10 +268,11 @@ export default function Home() {
                   </div>
 
                   {/* Card content */}
+
                   <div
                     className={[
-                      "flex flex-col justify-between h-full items-center",
-                      "transition-all duration-300 ease-out",
+                      "flex flex-col justify-between relative w-full h-full items-start p-2 z-10",
+                      "transition-all duration-300 ease-out ",
                       isOpen
                         ? "opacity-30 scale-[0.99]"
                         : "opacity-100 scale-100",
@@ -257,11 +281,17 @@ export default function Home() {
                     <Image
                       src={c.icon}
                       alt={`${c.title} icon`}
-                      width={24}
-                      height={24}
+                      width={40}
+                      height={40}
+                      className="absolute top-[-22px]  right-[-32px]"
                     />
-                    <h2 className="mt-3 text-base font-semibold">{c.title}</h2>
-                    <p className="mt-2 text-sm text-center text-muted-foreground">
+                    <div className="  flex  rounded-md ">
+                      <h2 className="text-[#3d571c] text-start font-bold tracking-tight font-sans">
+                        {c.title}
+                      </h2>
+                    </div>
+
+                    <p className="mt-2 text-sm z-10 font-sans text-start text-muted-foreground">
                       {c.desc}
                     </p>
 
@@ -271,7 +301,7 @@ export default function Home() {
                         void incrementClick(`card-${c.id}`);
                       }}
                       variant="ghost"
-                      className="mt-3 px-0"
+                      className="mt-3 px-0 font-sans z-20"
                     >
                       Learn More
                     </Button>
@@ -282,64 +312,22 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section className="w-full bg-[#F4F1E8] ">
-        <div className="mx-auto max-w-6xl px-6 py-16">
-          
-          <div className="text-center">
-            <h2 className="font-serif pb-10 text-3xl tracking-tight text-[#1f1f1f] sm:text-4xl">
-              Vom Brau zur Blüte
-            </h2>
-            <p className="mx-auto max-w-2xl text-sm text-[#7a7a7a]">
-              Unser einfacher Vier-Schritte-Prozess schafft einen nachhaltigen
-              Kreislauf , der allen zugute kommt
-            </p>
-          </div>
 
-          {/* Steps */}
-          <div className="mt-14 grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
-            {steps.map((s) => {
-              const Icon = s.icon;
-              return (
-                <div
-                  key={s.title}
-                  className=" p-2 flex flex-col items-center justify-center bg-white/70 rounded-xl py-2"
-                >
-                  <Image
-                    className=" inset-0"
-                    src={s.icon}
-                    alt={s.title}
-                    width={36}
-                    height={36}
-                  />
-
-                  <h3 className="font-serif text-base text-[#1f1f1f]">
-                    {s.title}
-                  </h3>
-
-                  <p className=" mt-2  text-center text-sm text-muted-foreground">
-                    {s.desc}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-      <div className="flex items-center flex-col bg-[#F4F1E8] xl:flex-row ">
-        <section className="w-full bg-[#1A4314]  basis-2/3 xl:rounded-r-4xl ">
+      <div className="flex items-center flex-col bg-[#F8F2E8] xl:flex-row ">
+        <section className="w-full bg-[#3d571c]  basis-2/3 rounded-r-sm">
           <div className="mx-auto max-w-6xl px-6 py-16 flex flex-col items-center">
             <div className="max-w-2xl">
-              <h2 className="font-serif text-4xl leading-tight tracking-tight text-white sm:text-5xl">
-                Why Gardeners Choose <br className="hidden sm:block" />
-                Brewcycle
+              <h2 className="font-serif text-4xl leading-tight font-silly tracking-tight text-white sm:text-5xl">
+                VOM BRAU ZUR <br className="hidden sm:block" />
+                BLÜTE
               </h2>
 
-              <p className="mt-5 max-w-xl text-sm leading-6 text-white/70">
-                Professional-grade nutrition for the hobby gardener who refuses
-                to compromise on quality or ethics.
+              <p className="mt-5 max-w-xl font-sans text-sm leading-6 text-white/70">
+                Unser einfacher Vier-Schritte-Prozess schafft einen nachhaltigen
+                Kreislauf , der allen zugute kommt
               </p>
 
-              <div className="mt-10 space-y-4">
+              <div className="mt-10 space-y-4 ">
                 {features.map((f) => {
                   const Icon = f.icon;
                   return (
@@ -347,15 +335,15 @@ export default function Home() {
                       key={f.title}
                       className="flex items-start gap-4 rounded-2xl bg-white/10 px-5 py-4"
                     >
-                      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white/10">
-                        <Icon className="h-5 w-5 text-white/90" />
+                      <div className="flex p-2 items-center justify-center rounded-xl bg-white/10">
+                        <Icon className="h-8 w-8 text-white/90" />
                       </div>
 
                       <div>
-                        <h3 className="font-serif text-lg text-white">
+                        <h3 className="font-serif   font-silly text-lg text-white">
                           {f.title}
                         </h3>
-                        <p className="mt-1 text-sm leading-6 text-white/70">
+                        <p className="mt-1 text-sm leading-6 font-sans text-white/70">
                           {f.desc}
                         </p>
                       </div>
@@ -366,12 +354,15 @@ export default function Home() {
             </div>
           </div>
         </section>
-        <div className="w-full xl:basis-1/2  ">
+        <div className="w-full xl:basis-1/3  ">
           <EmailCapture />
         </div>
       </div>
-      <section>
-        <div className="grid xl:mx-20 grid-cols-3 xl:grid-cols-9 place-items-center gap-5 p-10">
+      <section className="flex w-full flex-col">
+        <h2 className=" text-6xl xl:mx-auto  text-center xl:text-left py-10 tracking-tight font-silly text-[#1f1f1f] sm:text-7xl">
+          UNSERE PARTNER
+        </h2>
+        <div className="flex-col items-center gap-y-10 xl:flex-row flex w-full justify-between p-10">
           <Link href="https://egger-bier.at">
             <Image src={logo4} alt="something" width="180" height="180" />
           </Link>

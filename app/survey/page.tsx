@@ -12,7 +12,7 @@ import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
-import { submitSurvey } from "../actions";
+import { submitSurveyAnswers, updateSurveyWithEmail } from "../actions";
 
 type Option = { id: string; label: string };
 type Question = {
@@ -85,9 +85,10 @@ export default function SurveyPage() {
   // answers are anonymous; collected on first step
   const [answers, setAnswers] = React.useState<Record<string, string>>({});
   const [notes, setNotes] = React.useState("");
+  const [surveyId, setSurveyId] = React.useState<string | null>(null);
 
-    // email collection step
-    const [email, setEmail] = React.useState("");
+  // email collection step
+  const [email, setEmail] = React.useState("");
     const [waitlistConsent, setWaitlistConsent] = React.useState(false);
     const [contactMeConsent, setContactMeConsent] = React.useState(false);
     const [isSubmitting, setIsSubmitting] = React.useState(false);
@@ -104,40 +105,54 @@ export default function SurveyPage() {
     setAnswers((prev) => ({ ...prev, [qid]: optionId }));
   }
 
-  function handleGoToEmail() {
-    // Anonymous submit of answers
-    console.log("Survey answers submitted (anonymous):", { answers, notes });
-    setStep("email");
+  async function handleGoToEmail() {
+    setIsSubmitting(true);
+    try {
+      const result = await submitSurveyAnswers({ answers, notes });
+      if (result.success && result.surveyId) {
+        setSurveyId(result.surveyId);
+        setStep("email");
+      } else {
+        alert(result.error || "Submission failed");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong");
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
-    async function handleFinish() {
-        setIsSubmitting(true);
-        try {
-            const result = await submitSurvey({
-                email: email.trim(),
-                answers,
-                notes,
-                waitlistConsent,
-                contactMeConsent,
-            });
+  async function handleFinish() {
+      setIsSubmitting(true);
+      try {
+          if (!surveyId) throw new Error("No survey ID found.");
+          
+          const result = await updateSurveyWithEmail({
+              surveyId: surveyId,
+              email: email.trim(),
+              waitlistConsent,
+              contactMeConsent,
+          });
 
-            if (result.success) {
-                setStep("done");
-            } else {
-                alert(result.error || "Submission failed");
-            }
-        } catch (err) {
-            console.error(err);
-            alert("Something went wrong");
-        } finally {
-            setIsSubmitting(false);
-        }
-    }
+          if (result.success) {
+              setStep("done");
+          } else {
+              alert(result.error || "Update failed");
+          }
+      } catch (err) {
+          console.error(err);
+          alert("Something went wrong");
+      } finally {
+          setIsSubmitting(false);
+      }
+  }
 
   function reset() {
     setStep("questions");
     setAnswers({});
     setNotes("");
+    setSurveyId(null);
     setEmail("");
     setWaitlistConsent(false);
     setContactMeConsent(false);
@@ -371,10 +386,10 @@ export default function SurveyPage() {
 
                   <Button
                     className="rounded-xl bg-[#1F6F50] text-white hover:opacity-90"
-                    disabled={!canProceedToEmail}
+                    disabled={!canProceedToEmail || isSubmitting}
                     onClick={handleGoToEmail}
                   >
-                    Weiter
+                    {isSubmitting ? "Wird gesendet..." : "Weiter"}
                   </Button>
                 </div>
               </div>

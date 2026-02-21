@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client"
   output   = "../lib/generated/prisma"
@@ -11,4 +5,30 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+}
+
+model button_clicks {
+  slug       String    @id
+  count      BigInt?   @default(1)
+  updated_at DateTime? @default(now()) @db.Timestamptz(6)
+}
+
+model surveys {
+  id                 String     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email              String?
+  answers            Json
+  waitlist_consent   Boolean?   @default(false)
+  contact_me_consent Boolean?   @default(false)
+  created_at         DateTime?  @default(now()) @db.Timestamptz(6)
+  waitlist           waitlist[] // A survey might link to a waitlist entry
+}
+
+model waitlist {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email      String    @unique
+  source     String    @default("landing_page") // Can be 'landing_page' or 'survey'
+  survey_id  String?   @db.Uuid
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+
+  survey     surveys?  @relation(fields: [survey_id], references: [id])
 }

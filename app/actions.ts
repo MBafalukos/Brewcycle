@@ -3,49 +3,37 @@
 import { supabase } from "@/lib/supabase";
 import { z } from "zod";
 
-// Schema for survey validation
-const surveySchema = z.object({
-    email: z.string().email("Invalid email address"),
+// Schemas for validation
+const surveyAnswersSchema = z.object({
     answers: z.record(z.string(), z.string()),
     notes: z.string().optional(),
-    waitlistConsent: z.boolean().refine((val) => val === true, {
-        message: "Consent is required",
-    }),
+});
+
+const surveyEmailSchema = z.object({
+    surveyId: z.string().uuid("Invalid survey ID"),
+    email: z.string().email("Invalid email address"),
+    waitlistConsent: z.boolean(),
     contactMeConsent: z.boolean().optional(),
 });
 
-export type SurveyData = z.infer<typeof surveySchema>;
+const joinWaitlistSchema = z.object({
+    email: z.string().email("Invalid email address"),
+});
+
+export type SurveyAnswersData = z.infer<typeof surveyAnswersSchema>;
+export type SurveyEmailData = z.infer<typeof surveyEmailSchema>;
 
 /**
  * Increments the click counter for a specific button slug.
- * Uses an upsert logic: if slug exists, increment; else insert with count 1.
  */
 export async function incrementClick(slug: string) {
     try {
-        // We use a raw RPC call or a specific query pattern for atomic increment if possible.
-        // However, for simplicity and production readiness in Supabase, we can use an RPC or a simple upsert if RLS allows.
-        // For this example, we'll try to use a Supabase function if defined, or a standard upsert.
-
-        // Note: Atomic increments in Supabase are best done via RPC.
-        // CREATE OR REPLACE FUNCTION increment_button_click(button_slug TEXT)
-        // RETURNS void AS $$
-        // BEGIN
-        //   INSERT INTO button_clicks (slug, count)
-        //   VALUES (button_slug, 1)
-        //   ON CONFLICT (slug)
-        //   DO UPDATE SET count = button_clicks.count + 1, updated_at = now();
-        // END;
-        // $$ LANGUAGE plpgsql;
-
         const { error } = await supabase.rpc("increment_button_click", {
             button_slug: slug,
         });
 
         if (error) {
-            // Fallback to manual if RPC is not set up yet (though RPC is recommended)
             console.error("RPC increment failed:", error);
-
-            // Manual fallback (not atomic but works for basic tracking)
             const { data: existing } = await supabase
                 .from("button_clicks")
                 .select("count")
@@ -63,7 +51,6 @@ export async function incrementClick(slug: string) {
                     .insert({ slug, count: 1 });
             }
         }
-
         return { success: true };
     } catch (err) {
         console.error("Error incrementing click:", err);
@@ -72,30 +59,86 @@ export async function incrementClick(slug: string) {
 }
 
 /**
- * Submits survey data to the database.
+ * Submits anonymous survey answers and returns the created record ID.
  */
-export async function submitSurvey(data: SurveyData) {
+export async function submitSurveyAnswers(data: SurveyAnswersData) {
     try {
-        // Validate input
-        const validated = surveySchema.parse(data);
+        const validated = surveyAnswersSchema.parse(data);
 
-        const { error } = await supabase.from("surveys").insert([
-            {
-                email: validated.email,
-                answers: { ...validated.answers, notes: validated.notes },
-                waitlist_consent: validated.waitlistConsent,
-                contact_me_consent: validated.contactMeConsent,
-            },
-        ]);
+        const { data: inserted, error } = await supabase
+            .from("surveys")
+            .insert([{ answers: { ...validated.answers, notes: validated.notes } }])
+            .select("id")
+            .single();
 
         if (error) throw error;
+        return { success: true, surveyId: inserted.id };
+    } catch (err) {
+        if (err instanceof z.ZodError) return { success: false, error: err.issues[0].message };
+        console.error("Error submitting survey answers:", err);
+        return { success: false, error: "Failed to submit survey answers" };
+    }
+}
+
+/**
+ * Updates an existing survey record with email and consent. 
+ * If waitlist consent is given, adds to the waitlist.
+ */
+export async function updateSurveyWithEmail(data: SurveyEmailData) {
+    try {
+        const validated = surveyEmailSchema.parse(data);
+
+        const { error: updateError } = await supabase
+            .from("surveys")
+            .update({
+                email: validated.email,
+                waitlist_consent: validated.waitlistConsent,
+                contact_me_consent: validated.contactMeConsent,
+            })
+            .eq("id", validated.surveyId);
+
+        if (updateError) throw updateError;
+
+        if (validated.waitlistConsent) {
+            const { error: waitlistError } = await supabase.from("waitlist").upsert(
+                {
+                    email: validated.email,
+                    source: "survey",
+                    survey_id: validated.surveyId,
+                },
+                { onConflict: "email" }
+            );
+            if (waitlistError) throw waitlistError;
+        }
 
         return { success: true };
     } catch (err) {
-        if (err instanceof z.ZodError) {
-            return { success: false, error: err.issues[0].message };
-        }
-        console.error("Error submitting survey:", err);
-        return { success: false, error: "Failed to submit survey" };
+        if (err instanceof z.ZodError) return { success: false, error: err.issues[0].message };
+        console.error("Error updating survey:", err);
+        return { success: false, error: "Failed to update survey" };
+    }
+}
+
+/**
+ * Allows joining the waitlist directly from the landing page.
+ */
+export async function joinWaitlist(emailInput: string) {
+    try {
+        const validated = joinWaitlistSchema.parse({ email: emailInput });
+
+        const { error } = await supabase.from("waitlist").upsert(
+            {
+                email: validated.email,
+                source: "landing_page",
+            },
+            { onConflict: "email" }
+        );
+
+        if (error) throw error;
+        return { success: true };
+    } catch (err) {
+        if (err instanceof z.ZodError) return { success: false, error: err.issues[0].message };
+        console.error("Error joining waitlist:", err);
+        return { success: false, error: "Failed to join waitlist" };
     }
 }
