@@ -12,7 +12,7 @@ import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
-import { submitSurveyAnswers, updateSurveyWithEmail } from "../actions";
+import { submitSurveyAnswers, updateSurveyWithEmail } from "../../actions";
 
 type Option = { id: string; label: string };
 type Question = {

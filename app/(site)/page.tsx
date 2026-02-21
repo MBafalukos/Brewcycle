@@ -39,7 +39,7 @@ import logo8 from "../../public/logos/Avenue.png";
 import logo9 from "../../public/logos/9-DC.png";
 import EmailCapture from "@/components/common/EmailCapture";
 import { useState } from "react";
-import { incrementClick } from "../actions";
+import { incrementClick } from "../../actions";
 type Step = {
   icon: StaticImageData;
   title: string;
