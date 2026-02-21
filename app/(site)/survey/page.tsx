@@ -89,9 +89,9 @@ export default function SurveyPage() {
 
   // email collection step
   const [email, setEmail] = React.useState("");
-    const [waitlistConsent, setWaitlistConsent] = React.useState(false);
-    const [contactMeConsent, setContactMeConsent] = React.useState(false);
-    const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [waitlistConsent, setWaitlistConsent] = React.useState(false);
+  const [contactMeConsent, setContactMeConsent] = React.useState(false);
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   const answeredCount = Object.keys(answers).length;
   const total = QUESTIONS.length;
@@ -124,28 +124,28 @@ export default function SurveyPage() {
   }
 
   async function handleFinish() {
-      setIsSubmitting(true);
-      try {
-          if (!surveyId) throw new Error("No survey ID found.");
-          
-          const result = await updateSurveyWithEmail({
-              surveyId: surveyId,
-              email: email.trim(),
-              waitlistConsent,
-              contactMeConsent,
-          });
+    setIsSubmitting(true);
+    try {
+      if (!surveyId) throw new Error("No survey ID found.");
 
-          if (result.success) {
-              setStep("done");
-          } else {
-              alert(result.error || "Update failed");
-          }
-      } catch (err) {
-          console.error(err);
-          alert("Something went wrong");
-      } finally {
-          setIsSubmitting(false);
+      const result = await updateSurveyWithEmail({
+        surveyId: surveyId,
+        email: email.trim(),
+        waitlistConsent,
+        contactMeConsent,
+      });
+
+      if (result.success) {
+        setStep("done");
+      } else {
+        alert(result.error || "Update failed");
       }
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong");
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   function reset() {
@@ -161,8 +161,8 @@ export default function SurveyPage() {
   return (
     <main className="mx-auto w-full max-w-3xl px-6 py-12 sm:py-16">
       <div className="flex flex-col gap-3">
-        <Badge className="w-fit bg-[#1F6F50]/15 text-[#1F6F50] hover:bg-[#1F6F50]/15">
-          Brewcycle Survey
+        <Badge className="bg-[#1F6F50]/10 mb-5 text-[#1F6F50] border-[#1F6F50]/20 px-4 py-1.5 text-sm font-medium hover:bg-[#1F6F50]/15 transition-colors uppercase tracking-[0.2em] rounded-full">
+          Umfrage
         </Badge>
         <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
           Hilf uns, Brewcycle zu verbessern
@@ -378,14 +378,14 @@ export default function SurveyPage() {
                 <div className="flex gap-3">
                   <Button
                     variant="outline"
-                    className="rounded-xl"
+                    className="rounded-xl bg-white"
                     onClick={reset}
                   >
                     Zurücksetzen
                   </Button>
 
                   <Button
-                    className="rounded-xl bg-[#1F6F50] text-white hover:opacity-90"
+                    className="rounded-xl bg-[#3d571c] text-white hover:opacity-90"
                     disabled={!canProceedToEmail || isSubmitting}
                     onClick={handleGoToEmail}
                   >

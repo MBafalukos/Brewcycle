@@ -13,34 +13,33 @@ import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 
 import { Button } from "@/components/ui/button";
-import banner from "../public/team/bg.png";
-import farm from "../public/team/farm.png";
+import banner from "../../public/team/bg.png";
+import farm from "../../public/team/farm.png";
 /* Steps */
-import step1Icon from "../public/icons/grain-veg-svgrepo-com.svg";
-import step2Icon from "../public/icons/wheelbarrow-construction-svgrepo-com.svg";
-import step3Icon from "../public/icons/microorganism-svgrepo-com.svg";
-import step4Icon from "../public/icons/sprout-svgrepo-com (2).svg";
+import step1Icon from "../../public/icons/grain-veg-svgrepo-com.svg";
+import step2Icon from "../../public/icons/wheelbarrow-construction-svgrepo-com.svg";
+import step3Icon from "../../public/icons/microorganism-svgrepo-com.svg";
+import step4Icon from "../../public/icons/sprout-svgrepo-com (2).svg";
 /* Cards */
-import card2Icon from "../public/icons/circle-number-2-svgrepo-com.svg";
-import card1Background from "../public/icons/flat-design-circular-economy-infographic-template.png";
-import card2Background from "../public/icons/card2background.png";
-import card3Background from "../public/icons/flat-design-circular-economy-infographic-template.png";
-import card1Icon from "../public/icons/circle-number-1-svgrepo-com.svg";
-import card3Icon from "../public/icons/circle-number-3-svgrepo-com.svg";
+import card2Icon from "../../public/icons/circle-number-2-svgrepo-com.svg";
+import card1Background from "../../public/icons/flat-design-circular-economy-infographic-template.png";
+import card2Background from "../../public/icons/card2background.png";
+import card3Background from "../../public/icons/flat-design-circular-economy-infographic-template.png";
+import card1Icon from "../../public/icons/circle-number-1-svgrepo-com.svg";
+import card3Icon from "../../public/icons/circle-number-3-svgrepo-com.svg";
 /* Logos */
-import logo1 from "../public/logos/Donaulandkompost.svg";
-import logo2 from "../public/logos/AWS.svg";
-import logo3 from "../public/logos/Smartup.png";
-import logo4 from "../public/logos/1-Egger.png";
-import logo5 from "../public/logos/Acent.png";
-import logo6 from "../public/logos/6-WU.png";
-import logo7 from "../public/logos/7-FH-WRN.png";
-import logo8 from "../public/logos/Avenue.png";
-import logo9 from "../public/logos/9-DC.png";
+import logo1 from "../../public/logos/Donaulandkompost.svg";
+import logo2 from "../../public/logos/AWS.svg";
+import logo3 from "../../public/logos/Smartup.png";
+import logo4 from "../../public/logos/1-Egger.png";
+import logo5 from "../../public/logos/Acent.png";
+import logo6 from "../../public/logos/6-WU.png";
+import logo7 from "../../public/logos/7-FH-WRN.png";
+import logo8 from "../../public/logos/Avenue.png";
+import logo9 from "../../public/logos/9-DC.png";
 import EmailCapture from "@/components/common/EmailCapture";
 import { useState } from "react";
-import { incrementClick } from "./actions";
-
+import { incrementClick } from "../actions";
 type Step = {
   icon: StaticImageData;
   title: string;
@@ -151,7 +150,7 @@ export default function Home() {
                   Garten die Nährstoffe, die er braucht, und reduziere
                   gleichzeitig Abfall.
                 </p>
-                <p className="mt-2 text-[#9BAD21] ">
+                <p className="mt-2 text-black/70 ">
                   NACHHALTIGE & NATÜRLICHE PFLANZENERNÄHRUNG.
                 </p>
 
@@ -208,7 +207,7 @@ export default function Home() {
 
       <section className="mx-auto py-20 bg-[#F8F2E8] bg-cover px-6   ">
         <div className=" items-center relative justify-center h-full  text-center flex flex-col">
-          <h2 className="font-serif text-5xl py-10 tracking-tight font-silly text-[#1f1f1f] sm:text-6xl">
+          <h2 className="font-serif text-4xl  tracking-tight font-silly text-[#1f1f1f] sm:text-5xl">
             UNSER VERSPRECHEN AN DIE NATUR
           </h2>
 
@@ -283,7 +282,7 @@ export default function Home() {
                       alt={`${c.title} icon`}
                       width={40}
                       height={40}
-                      className="absolute top-[-22px]  right-[-32px]"
+                      className="absolute top-[-22px]  right-[-28px]"
                     />
                     <div className="  flex  rounded-md ">
                       <h2 className="text-[#3d571c] text-start font-bold tracking-tight font-sans">
@@ -303,7 +302,7 @@ export default function Home() {
                       variant="ghost"
                       className="mt-3 px-0 font-sans z-20"
                     >
-                      Learn More
+                      Mehr erfahren
                     </Button>
                   </div>
                 </div>
@@ -313,16 +312,15 @@ export default function Home() {
         </div>
       </section>
 
-      <div className="flex items-center flex-col bg-[#F8F2E8] xl:flex-row ">
-        <section className="w-full bg-[#3d571c]  basis-2/3 rounded-r-sm">
-          <div className="mx-auto max-w-6xl px-6 py-16 flex flex-col items-center">
-            <div className="max-w-2xl">
-              <h2 className="font-serif text-4xl leading-tight font-silly tracking-tight text-white sm:text-5xl">
-                VOM BRAU ZUR <br className="hidden sm:block" />
-                BLÜTE
+      <div className="flex items-center justify-center flex-col bg-[#F8F2E8] xl:flex-row ">
+        <section className="w-full  relative  basis-1/3 ">
+          <div className=" px-6 py-16 flex flex-col items-center">
+            <div className="">
+              <h2 className="font-serif text-black text-4xl leading-tight font-silly tracking-tight  sm:text-5xl">
+                VOM BRAU ZUR BLÜTE
               </h2>
 
-              <p className="mt-5 max-w-xl font-sans text-sm leading-6 text-white/70">
+              <p className="mt-5 max-w-xl font-sans text-black/70 text-sm leading-6 ">
                 Unser einfacher Vier-Schritte-Prozess schafft einen nachhaltigen
                 Kreislauf , der allen zugute kommt
               </p>
@@ -333,17 +331,17 @@ export default function Home() {
                   return (
                     <div
                       key={f.title}
-                      className="flex items-start gap-4 rounded-2xl bg-white/10 px-5 py-4"
+                      className="flex items-start gap-4 rounded-2xl bg-white px-5 py-4"
                     >
                       <div className="flex p-2 items-center justify-center rounded-xl bg-white/10">
-                        <Icon className="h-8 w-8 text-white/90" />
+                        <Icon className="h-8 w-8 text-[#3d571c]" />
                       </div>
 
                       <div>
-                        <h3 className="font-serif   font-silly text-lg text-white">
+                        <h3 className="font-serif text-[#9BAD21]  font-silly text-lg ">
                           {f.title}
                         </h3>
-                        <p className="mt-1 text-sm leading-6 font-sans text-white/70">
+                        <p className="mt-1 text-sm leading-6 text-black/70 font-sans ">
                           {f.desc}
                         </p>
                       </div>
@@ -354,15 +352,15 @@ export default function Home() {
             </div>
           </div>
         </section>
-        <div className="w-full xl:basis-1/3  ">
+        <div className=" flex  w-full xl:basis-1/3    ">
           <EmailCapture />
         </div>
       </div>
       <section className="flex w-full flex-col">
-        <h2 className=" text-6xl xl:mx-auto  text-center xl:text-left py-10 tracking-tight font-silly text-[#1f1f1f] sm:text-7xl">
+        <h2 className=" text-4xl xl:mx-auto  text-center xl:text-left py-10 tracking-tight font-silly text-[#1f1f1f] sm:text-5xl">
           UNSERE PARTNER
         </h2>
-        <div className="flex-col items-center gap-y-10 xl:flex-row flex w-full justify-between p-10">
+        <div className="grid-cols-2 sm:grid-cols-3 xl:grid-cols-9  gap-y-10 gap-x-10 xl:flex-row grid place-items-center flex w-full p-10">
           <Link href="https://egger-bier.at">
             <Image src={logo4} alt="something" width="180" height="180" />
           </Link>
