@@ -7,10 +7,21 @@ import {
   Wheat,
   Truck,
   CirclePile,
+  SeparatorVerticalIcon,
+  PercentCircle,
+  Percent,
+  Dot,
+  DotIcon,
 } from "lucide-react";
 import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
-import { Card, CardContent } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardTitle,
+} from "@/components/ui/card";
 
 import { Button } from "@/components/ui/button";
 import banner from "../../public/team/bg.png";
@@ -39,7 +50,8 @@ import logo8 from "../../public/logos/Avenue.png";
 import logo9 from "../../public/logos/9-DC.png";
 import EmailCapture from "@/components/common/EmailCapture";
 import { useState } from "react";
-import { incrementClick } from "../../actions";
+import { incrementClick } from "../actions";
+import { Separator } from "radix-ui";
 type Step = {
   icon: StaticImageData;
   title: string;
@@ -136,47 +148,46 @@ export default function Home() {
   return (
     <main className="bg-[#F8F2E8]">
       <section className="bg-gradient-to-b from-[#ddc5a9] to-[#F8F2E8] relative flex flex-col sm:flex-row   justify-center min-h-svh items-center  w-full justify-center overflow-hidden">
-        <div className=" z-20  px-10  text-center sm:text-left  sm:justify-start flex flex-col  ">
-          <h1 className="text-6xl mt-10  text-[#9BAD21] font-semibold tracking-tight font-silly  sm:text-7xl">
-            VON DER BRAUEREI ZUM <br />{" "}
-            <span className="text-[#3d571c]"> BLÜHENDEN</span>
-          </h1>
-
-          <Card className=" sm:my-5 w-full relative bg-transparent backdrop-blur-[1px] border-none shadow-none mx-auto  ">
+        <div className=" z-20  px-10  text-left justify-center sm:justify-start flex flex-col  ">
+          <Card className=" sm:my-5 w-full relative bg-transparent  backdrop-blur-[1px] border-none shadow-none  ">
             <CardContent>
-              <div className=" items-center justify-evenly  relative ">
-                <p className="mt-5 max-w-xl  text-base font-sans  text-[#3d571c] leading-relaxed  sm:text-lg">
-                  Premium Bio-Dünger aus Brauerei- Nebenprodukten. Gib deinem
-                  Garten die Nährstoffe, die er braucht, und reduziere
-                  gleichzeitig Abfall.
-                </p>
-                <p className="mt-2 text-black/70 ">
-                  NACHHALTIGE & NATÜRLICHE PFLANZENERNÄHRUNG.
-                </p>
+              <CardTitle>
+                <h1 className="text-6xl mt-10  text-[#9BAD21] font-semibold tracking-tight font-silly  sm:text-7xl">
+                  VON DER BRAUEREI ZUM <br />{" "}
+                  <span className="text-[#3d571c]"> BLÜHENDEN</span>
+                </h1>
+              </CardTitle>
+              <CardDescription>
+                {" "}
+                <div className="px-2 flex  w-fit rounded-lg justify-center  items-center  text-[8px] sm:text-[10px] md:text-[12px] lg:text-[14px] text-[#6B6B6B]">
+                  <p>100% Bio</p>
+                  <DotIcon />
+                  <p className="">Zero Waste</p>
+                  <DotIcon />
+                  <p>Made in Austria</p>
+                </div>
+                <div className=" relative ">
+                  <p className="mt-5 max-w-xl  text-base font-sans  text-[#3d571c] leading-relaxed  sm:text-lg">
+                    Premium Bio-Dünger aus Brauerei- Nebenprodukten. Gib deinem
+                    Garten die Nährstoffe, die er braucht, und reduziere
+                    gleichzeitig Abfall.
+                  </p>
+                  <p className="mt-2 text-black/70 ">
+                    NACHHALTIGE & NATÜRLICHE PFLANZENERNÄHRUNG.
+                  </p>
 
-                {/* CTA */}
-                <div className="mt-8 flex  font-sans items-center gap-5 flex-col xl:flex-row lg:items-center">
+                  {/* CTA */}
+
                   <Button
                     asChild
-                    className="h-11 rounded-xl  bg-[#3d571c] px-6 text-white hover:bg-[#3d571c]/90 "
+                    className="h-10 mx-auto sm:mx-0 rounded-xl w-fit flex justify-center sm:justify-start  bg-[#3d571c] mt-10 mb-5 text-white hover:bg-[#3d571c]/90 "
                   >
                     <a href="/survey">Jetzt kaufen</a>
                   </Button>
-                  <div className=" flex  gap-x-2 items-center justify-center  text-[8px] sm:text-[10px] md:text-[12px] lg:text-[14px] text-[#6B6B6B] ">
-                    <div className="w-fit px-2 bg-[#F8F2E8] rounded-lg  items-center gap-2">
-                      <p>100% Bio</p>
-                    </div>
-                    <div className="w-fit px-2 bg-[#F8F2E8]  rounded-lg  items-center gap-2">
-                      Made in Austria
-                    </div>
-                    <div className="w-fit px-2 bg-[#F8F2E8]  rounded-lg  items-center gap-2">
-                      <p className="">Zero Waste</p>
-                    </div>
-                  </div>
-                </div>
 
-                {/* Badges */}
-              </div>
+                  {/* Badges */}
+                </div>
+              </CardDescription>
 
               {/* Right */}
             </CardContent>
@@ -184,19 +195,19 @@ export default function Home() {
           <Button
             asChild
             variant="outline"
-            className="mx-auto bg-inherit border-none w-fit text-[#9BAD21] shadow-none text-xl font-silly tracking-extrawider  z-20 hover:bg-white"
+            className="mx-auto bg-inherit border-none w-fit text-[#9BAD21] shadow-none text-2xl font-silly tracking-extrawider  z-20 hover:bg-white"
           >
-            <a href="/learn-more">
+            <Link href="/">
               Mehr erfahren
               <ChevronsDown className="h-4 w-4 text-[#9BAD21]  " />
-            </a>
+            </Link>
           </Button>
         </div>
 
         <div className="">
           <Image
             src={banner}
-            alt="Leaf"
+            alt="Lea  f"
             width={550}
             height={550}
             priority
@@ -207,7 +218,7 @@ export default function Home() {
 
       <section className="mx-auto py-20 bg-[#F8F2E8] bg-cover px-6   ">
         <div className=" items-center relative justify-center h-full  text-center flex flex-col">
-          <h2 className="font-serif text-4xl  tracking-tight font-silly text-[#1f1f1f] sm:text-5xl">
+          <h2 className="font-serif text-4xl pb-10 tracking-tight font-silly text-[#1f1f1f] sm:text-5xl">
             UNSER VERSPRECHEN AN DIE NATUR
           </h2>
 
@@ -331,17 +342,17 @@ export default function Home() {
                   return (
                     <div
                       key={f.title}
-                      className="flex items-start gap-4 rounded-2xl bg-white px-5 py-4"
+                      className="flex items-start gap-4 rounded-2xl bg-[#3d571c] px-5 py-4"
                     >
                       <div className="flex p-2 items-center justify-center rounded-xl bg-white/10">
-                        <Icon className="h-8 w-8 text-[#3d571c]" />
+                        <Icon className="h-8 w-8 text-[#F8F2E8]" />
                       </div>
 
                       <div>
-                        <h3 className="font-serif text-[#9BAD21]  font-silly text-lg ">
+                        <h3 className="font-serif text-[#F8F2E8]  font-silly text-xl ">
                           {f.title}
                         </h3>
-                        <p className="mt-1 text-sm leading-6 text-black/70 font-sans ">
+                        <p className="mt-1 text-sm leading-6 text-[#F8F2E8] font-sans ">
                           {f.desc}
                         </p>
                       </div>

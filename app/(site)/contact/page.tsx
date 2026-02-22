@@ -117,7 +117,7 @@ export default function ContactPage() {
                 Produkten.
               </p>
 
-              <div className="mt-12 space-y-8">
+              {/* <div className="mt-12 space-y-8">
                 <div className="flex items-start gap-4">
                   <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-white/30 shadow-sm ring-1 ring-[#1F6F50]/10">
                     <Mail className="h-6 w-6 text-[#3d571c]" />
@@ -153,7 +153,7 @@ export default function ContactPage() {
                     </p>
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
 

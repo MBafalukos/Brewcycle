@@ -10,14 +10,14 @@ type FooterProps = {
 };
 
 const beansaverLinksLeft: LinkItem[] = [
-  { label: "JETZT KAUFEN", href: "#" },
-  { label: "KONTAKT", href: "#" },
-  { label: "TEAM", href: "#" },
+  { label: "JETZT KAUFEN", href: "/survey" },
+  { label: "KONTAKT", href: "/contact" },
+  { label: "TEAM", href: "/team" },
 ];
 
 const beansaverLinksRight: LinkItem[] = [
-  { label: "DATENSCHUTZ", href: "#" },
-  { label: "IMPRESSUM", href: "#" },
+  { label: "DATENSCHUTZ", href: "/datenschutz" },
+  { label: "IMPRESSUM", href: "/impressum" },
 ];
 
 function Badge({

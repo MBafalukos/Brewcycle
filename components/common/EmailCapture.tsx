@@ -35,12 +35,12 @@ export default function EmailCapture() {
     <div className="h-full w-full rounded-2xl font-sans   p-8 ">
       {submitted ? (
         <div className="text-center">
-          <CheckCircle className="mx-auto mb-3 h-8 w-8 text-green-600" />
-          <h3 className="text-xl font-semibold text-[#3d571c]">
-            Thank you for subscribing!
+          <CheckCircle className="mx-auto mb-3 h-8 w-8 text-[#3d571c]" />
+          <h3 className="text-xl font-sans font-semibold text-[#3d571c]">
+            Danke für deine Anmeldung!
           </h3>
-          <p className="mt-2 text-sm text-black/60">
-            You’ll receive our next update in your inbox.
+          <p className="mt-2 text-sm font-sans text-black/60">
+            Du erhältst unser nächstes Update direkt in deinem Posteingang.
           </p>
         </div>
       ) : (

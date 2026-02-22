@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetContent,
+  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
@@ -20,7 +21,13 @@ import {
 import Image from "next/image";
 import { Menu } from "lucide-react";
 
-type NavItem = { label: string; href: string };
+type NavItem = {
+  label: string;
+  href: string;
+  link1: string;
+  link2: string;
+  link3: string;
+};
 
 type HeaderProps = {
   brand?: { label: string; href?: string };
@@ -30,9 +37,27 @@ type HeaderProps = {
 
 export default function Header({
   nav = [
-    { label: "Home", href: "/" },
-    { label: "Kontakt", href: "/contact" },
-    { label: "Team", href: "/team" },
+    {
+      label: "Home",
+      href: "/",
+      link1: "Buy the product",
+      link2: "Learn more",
+      link3: "Partners",
+    },
+    {
+      label: "Kontakt",
+      href: "/contact",
+      link1: "info@brewcycle.at",
+      link2: "via form",
+      link3: "social",
+    },
+    {
+      label: "Team",
+      href: "/team",
+      link1: "CEO & CTO ",
+      link2: "CMO & CTO",
+      link3: "",
+    },
   ],
   cta = { label: "Jetzt Kaufen", href: "/survey" },
 }: HeaderProps) {
@@ -97,8 +122,41 @@ export default function Header({
             </SheetTrigger>
 
             <SheetContent side="right" className="w-[320px]">
-              <SheetHeader>
-                <SheetTitle className="flex items-center gap-2">
+              <div className="mt-6 flex h-full flex-col gap-2">
+                {nav.map((item) => (
+                  <div
+                    key={item.href}
+                    className="justify-center text-center font-sans flex flex-col"
+                  >
+                    <Button
+                      key={item.href}
+                      variant={isActive(item.href) ? "ghost" : "secondary"}
+                      className=" text-2xl flex justify-start my-5"
+                      asChild
+                      onClick={() => setOpen(false)}
+                    >
+                      <Link href={item.href}>{item.label}</Link>
+                    </Button>
+                    <div>
+                      <Button onClick={() => setOpen(false)} variant="ghost">
+                        <Link href={item.href}>{item.link1}</Link>
+                      </Button>
+                    </div>
+                    <div>
+                      <Button onClick={() => setOpen(false)} variant="ghost">
+                        <Link href={item.href}>{item.link2}</Link>
+                      </Button>
+                    </div>
+                    <div>
+                      <Button variant="ghost">
+                        <Link href={item.href}>{item.link3}</Link>
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <SheetFooter>
+                <SheetTitle className="flex justify-center items-center ">
                   <div>
                     <Image
                       width={150}
@@ -108,27 +166,7 @@ export default function Header({
                     />
                   </div>
                 </SheetTitle>
-              </SheetHeader>
-
-              <div className="mt-6 flex flex-col gap-2">
-                {nav.map((item) => (
-                  <Button
-                    key={item.href}
-                    variant={isActive(item.href) ? "secondary" : "ghost"}
-                    className="justify-start rounded-xl"
-                    asChild
-                    onClick={() => setOpen(false)}
-                  >
-                    <Link href={item.href}>{item.label}</Link>
-                  </Button>
-                ))}
-
-                <div className="mt-2">
-                  <Button className="w-full rounded-xl" asChild>
-                    <Link href={cta.href}>{cta.label}</Link>
-                  </Button>
-                </div>
-              </div>
+              </SheetFooter>
             </SheetContent>
           </Sheet>
         </div>
