@@ -9,13 +9,10 @@ type FooterProps = {
   year?: number;
 };
 
-const beansaverLinksLeft: LinkItem[] = [
+const links: LinkItem[] = [
   { label: "JETZT KAUFEN", href: "/survey" },
   { label: "KONTAKT", href: "/contact" },
   { label: "TEAM", href: "/team" },
-];
-
-const beansaverLinksRight: LinkItem[] = [
   { label: "DATENSCHUTZ", href: "/datenschutz" },
   { label: "IMPRESSUM", href: "/impressum" },
 ];
@@ -62,15 +59,14 @@ function BeanSaverFooter({ year }: { year: number }): React.ReactNode {
         <div className="grid grid-cols-1 gap-10 md:grid-cols-12">
           {/* Logo */}
           <div className="md:col-span-4">
-            <div className="flex items-center gap-3">
-              {/* Simple logo placeholder */}
-              <Image
-                width={150}
-                height={150}
-                alt="Picture of the author"
-                src="./logos/LogoBrew.svg"
-              />
-            </div>
+            {/* Simple logo placeholder */}
+            <Image
+              width={150}
+              height={150}
+              alt="Picture of the author"
+              src="./logos/LogoBrew.svg"
+            />
+
             <p className="text-white/70">
               Von der Brauerei zum blühenden Garten. Nachhaltiger Dünger aus
               Österreich.
@@ -80,7 +76,7 @@ function BeanSaverFooter({ year }: { year: number }): React.ReactNode {
           {/* Links left */}
           <div className="md:col-span-3">
             <ul className="space-y-3 text-xs uppercase tracking-wider text-white/70">
-              {beansaverLinksLeft.map((l) => (
+              {links.map((l) => (
                 <li key={l.label}>
                   <a href={l.href} className="transition hover:text-white">
                     {l.label}
@@ -91,17 +87,6 @@ function BeanSaverFooter({ year }: { year: number }): React.ReactNode {
           </div>
 
           {/* Links right */}
-          <div className="md:col-span-3">
-            <ul className="space-y-3 text-xs uppercase tracking-wider text-white/70">
-              {beansaverLinksRight.map((l) => (
-                <li key={l.label}>
-                  <a href={l.href} className="transition hover:text-white">
-                    {l.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
 
           {/* Social */}
           <div className="md:col-span-2 md:text-right">

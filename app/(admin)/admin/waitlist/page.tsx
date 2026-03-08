@@ -11,7 +11,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Download } from "lucide-react";
 import { format } from "date-fns";
+import { convertToCSV, downloadCSV } from "@/lib/survey-utils";
 
 export default function AdminWaitlistPage() {
   const [waitlist, setWaitlist] = useState<any[]>([]);
@@ -33,19 +36,46 @@ export default function AdminWaitlistPage() {
     loadData();
   }, []);
 
+  const handleExportCSV = () => {
+    if (waitlist.length === 0) return;
+
+    const csvData = waitlist.map((entry) => ({
+      Date: entry.created_at
+        ? format(new Date(entry.created_at), "yyyy-MM-dd HH:mm")
+        : "",
+      Email: entry.email,
+      Source: entry.source === "survey" ? "Survey" : "Landing Page",
+    }));
+
+    const headers = ["Date", "Email", "Source"];
+    const csvContent = convertToCSV(csvData, headers);
+    downloadCSV(
+      csvContent,
+      `subscribers_${format(new Date(), "yyyyMMdd")}.csv`,
+    );
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[50vh]">
-        <p className="text-muted-foreground animate-pulse">Loading waitlist...</p>
+        <p className="text-muted-foreground animate-pulse">
+          Loading waitlist...
+        </p>
       </div>
     );
   }
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-serif text-gray-900">Waitlist Signups</h1>
-        <p className="text-gray-500 mt-1">Users requesting early access.</p>
+      <div className="flex justify-between items-start">
+        <div>
+          <h1 className="text-3xl font-serif text-gray-900">Subscribers</h1>
+          <p className="text-gray-500 mt-1">Users requesting early access.</p>
+        </div>
+        <Button onClick={handleExportCSV} variant="outline" className="gap-2">
+          <Download className="h-4 w-4" />
+          Export CSV
+        </Button>
       </div>
 
       <div className="rounded-md border bg-white">
@@ -60,7 +90,10 @@ export default function AdminWaitlistPage() {
           <TableBody>
             {waitlist.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={3} className="text-center py-6 text-muted-foreground">
+                <TableCell
+                  colSpan={3}
+                  className="text-center py-6 text-muted-foreground"
+                >
                   No waitlist entries found.
                 </TableCell>
               </TableRow>
@@ -69,12 +102,14 @@ export default function AdminWaitlistPage() {
                 <TableRow key={entry.id}>
                   <TableCell>
                     {entry.created_at
-                      ? format(new Date(entry.created_at), "MMM d, yyyy HH:mm")
+                      ? format(new Date(entry.created_at), "MMM, dd HH:mm")
                       : "N/A"}
                   </TableCell>
-                  <TableCell className="font-medium">{entry.email}</TableCell>
+                  <TableCell className="font-medium">
+                    <Badge variant="secondary">{entry.email}</Badge>
+                  </TableCell>
                   <TableCell>
-                    <Badge variant={entry.source === "survey" ? "secondary" : "default"}>
+                    <Badge variant="secondary">
                       {entry.source === "survey" ? "Survey" : "Landing Page"}
                     </Badge>
                   </TableCell>

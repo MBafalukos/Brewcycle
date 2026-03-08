@@ -32,7 +32,7 @@ const TEAM: TeamMember[] = [
   },
   {
     id: "2",
-    name: "Philip Dvoracek",
+    name: "Filip Dvoracek",
     role: "CMO & CTO",
     location: "Vienna",
     bio: "Product, partnerships, and operations.",
@@ -74,7 +74,7 @@ export default function TeamPage() {
           {TEAM.map((member) => (
             <Card
               key={member.id}
-              className="group relative overflow-hidden border-0 bg-white/40 backdrop-blur-md shadow-xl shadow-black/5 ring-1 ring-black/5 rounded-lg transition-all duration-500 hover:shadow-2xl hover:shadow-[#1F6F50]/10 hover:-translate-y-1"
+              className="group relative overflow-hidden border-0 bg-white/40 backdrop-blur-md shadow-lg shadow-[#FD8602]/20 ring-1 ring-black/5 rounded-lg transition-all duration-500 hover:shadow-2xl hover:shadow-[#1F6F50]/10 hover:-translate-y-1"
             >
               <CardContent className="p">
                 <div className="flex flex-col sm:flex-row h-full">

@@ -6,7 +6,7 @@ import { supabase } from "@/lib/supabase"; // Use the service role client for db
 /**
  * Ensures the caller is authenticated as an admin before running the query.
  */
-async function requireAuth() {
+export async function requireAuth() {
     const authSupabase = await createClient();
     const { data: { user }, error } = await authSupabase.auth.getUser();
     if (error || !user) {
@@ -22,16 +22,20 @@ export async function getDashboardStats() {
         const [surveysResponse, waitlistResponse, clicksResponse] = await Promise.all([
             supabase.from("surveys").select("id", { count: "exact", head: true }),
             supabase.from("waitlist").select("id", { count: "exact", head: true }),
-            supabase.from("button_clicks").select("count"),
+            supabase.from("button_clicks").select("slug, count"),
         ]);
 
-        // Sum button clicks
+        // Sum button clicks and extract buy-now clicks
         let totalClicks = 0;
+        let buyNowClicks = 0;
         if (clicksResponse.data) {
-            totalClicks = clicksResponse.data.reduce(
-                (acc, curr) => acc + Number(curr.count || 0),
-                0
-            );
+            clicksResponse.data.forEach((curr) => {
+                const count = Number(curr.count || 0);
+                totalClicks += count;
+                if (curr.slug === "buy-now") {
+                    buyNowClicks = count;
+                }
+            });
         }
 
         return {
@@ -40,6 +44,7 @@ export async function getDashboardStats() {
                 surveys: surveysResponse.count || 0,
                 waitlist: waitlistResponse.count || 0,
                 buttonClicks: totalClicks,
+                buyNowClicks: buyNowClicks,
             },
         };
     } catch (error) {

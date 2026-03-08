@@ -14,64 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { submitSurveyAnswers, updateSurveyWithEmail } from "../../actions";
 
-type Option = { id: string; label: string };
-type Question = {
-  id: string;
-  title: string;
-  description?: string;
-  options: Option[];
-};
-
-const QUESTIONS: Question[] = [
-  {
-    id: "interest_reason",
-    title: "Was interessiert dich an Brewcycle am meisten?",
-    options: [
-      { id: "sustainability", label: "Nachhaltigkeit & Kreislaufwirtschaft" },
-      { id: "vegan", label: "Rein pflanzliche / vegane Inhaltsstoffe" },
-      { id: "local_austria", label: "Regionale Herkunft aus Österreich" },
-      { id: "innovation", label: "Innovatives Konzept" },
-      { id: "other", label: "Sonstiges" },
-    ],
-  },
-  {
-    id: "primary_use_area",
-    title: "Für welchen Bereich suchst du primär einen Dünger?",
-    options: [
-      { id: "indoor_balcony", label: "Balkon- und Zimmerpflanzen" },
-      { id: "vegetables_raised_bed", label: "Gemüsebeet und Hochbeet" },
-      { id: "lawn_ornamental", label: "Rasen und Ziergarten" },
-      { id: "agriculture", label: "Landwirtschaftliche Flächen" },
-      { id: "other", label: "Sonstiges" },
-    ],
-  },
-  {
-    id: "typical_purchase_channel",
-    title: "Wo kaufst du Gartenprodukte üblicherweise ein?",
-    options: [
-      { id: "online_shop", label: "Bequem im Online-Shop" },
-      { id: "diy_store", label: "Im Baumarkt (z.B. OBI, Hornbach)" },
-      {
-        id: "garden_center",
-        label: "Im Gartencenter (z.B. Bellaflora, Dehner, Starkl)",
-      },
-      { id: "local_specialist", label: "Im lokalen Fachhandel" },
-      { id: "other", label: "Sonstiges" },
-    ],
-  },
-  {
-    id: "age_group",
-    title: "Wie alt bist du?",
-    options: [
-      { id: "under_25", label: "Unter 25" },
-      { id: "25_35", label: "25 – 35" },
-      { id: "36_45", label: "36 – 45" },
-      { id: "46_55", label: "46 – 55" },
-      { id: "56_65", label: "56 – 65" },
-      { id: "65_plus", label: "65+" },
-    ],
-  },
-];
+import { QUESTIONS } from "@/lib/survey-config";
 
 function isValidEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
@@ -314,7 +257,7 @@ export default function SurveyPage() {
             </div>
           ) : (
             <>
-              {QUESTIONS.map((q, idx) => (
+              {QUESTIONS.map((q: any, idx: number) => (
                 <div key={q.id} className="space-y-3">
                   <div className="space-y-1">
                     <p className="text-sm text-muted-foreground">
@@ -333,7 +276,7 @@ export default function SurveyPage() {
                     onValueChange={(v) => setAnswer(q.id, v)}
                     className="grid gap-2"
                   >
-                    {q.options.map((opt) => (
+                    {q.options.map((opt: any) => (
                       <div
                         key={opt.id}
                         className="flex items-center gap-3 rounded-xl border p-3 hover:bg-muted/40"

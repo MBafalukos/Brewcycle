@@ -45,10 +45,7 @@ export default function EmailCapture() {
         </div>
       ) : (
         <>
-          <Badge
-            variant="secondary"
-            className="bg-[#3d571c]/10 text-[#3d571c] font-sans  "
-          >
+          <Badge className="bg-[#3d571c]/10 text-[#3d571c] border-[#3d571c]/20  px-2 py-1.5  font-medium hover:bg-[#1F6F50]/15 transition-colors uppercase tracking-[0.2em] rounded-full">
             Newsletter
           </Badge>
           <h3 className="mt-4 font-sans text-2xl leading-tight text-[#0F172A]">
@@ -58,7 +55,7 @@ export default function EmailCapture() {
             Erhalten Sie exklusive Informationen.
           </p>
 
-          <div className="mt-4  rounded-lg bg-white/70 p-3 text-sm text-[#3d571c]">
+          <div className="mt-4  rounded-lg bg-white/70 p-3 text-sm text-[#3d571c] ">
             <CheckCircle className="mr-1 inline-block h-4 w-4 align-text-bottom" />
             10% Rabatt auf Ihre erste Bestellung!
           </div>
@@ -77,13 +74,19 @@ export default function EmailCapture() {
               disabled={isLoading}
               className="bg-[#3d571c] w-fit text-white hover:opacity-90"
             >
-              {isLoading ? "Joining..." : "Treten Sie der Liste bei"}
+              {isLoading ? "Joining..." : "Jetzt anmelden"}
             </Button>
           </form>
 
           <div className="mt-4 flex items-center gap-2 text-xs text-black/55">
             <Lock className="h-3.5 w-3.5" />
-            Jederzeit abbestellbar.
+            <div className="gap-1 ">
+              {" "}
+              Mit dem Absenden Ihrer E-Mail-Adresse stimmen Sie unserer
+              <a href="/datenschutz" className="border-b ml-1 border-black/70">
+                Datenschutzerklärung zu.
+              </a>
+            </div>
           </div>
         </>
       )}

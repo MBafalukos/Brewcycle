@@ -105,7 +105,10 @@ export default function Header({
         </div>
         {/* Desktop CTA */}
         <div className="hidden md:flex">
-          <Button asChild className="rounded-xl bg-[#3d571c]">
+          <Button
+            asChild
+            className="shadow-md shadow-[#FD8602]/30 border-black/20 bg-[#3d571c]"
+          >
             <Link className="text-white  tracking-tight" href={cta.href}>
               {cta.label}
             </Link>

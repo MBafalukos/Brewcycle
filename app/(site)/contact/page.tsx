@@ -158,7 +158,7 @@ export default function ContactPage() {
           </div>
 
           {/* Form Area */}
-          <Card className="overflow-hidden border-0 bg-white/50 backdrop-blur-sm shadow-2xl shadow-black/5 ring-1 ring-black/5 rounded-[2.5rem]">
+          <Card className="overflow-hidden border-0 bg-white/50  backdrop-blur-sm shadow-lg shadow-[#FD8602]/20 ring-1 ring-black/5 rounded-[2.5rem]">
             <CardContent className="p-8 sm:p-12">
               <form onSubmit={handleSubmit} className="space-y-8">
                 <div className="space-y-6">

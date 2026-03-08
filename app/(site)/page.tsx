@@ -1,43 +1,26 @@
 "use client";
 import {
-  Leaf,
   Sprout,
   X,
-  ChevronsDown,
   Wheat,
   Truck,
   CirclePile,
-  SeparatorVerticalIcon,
-  PercentCircle,
-  Percent,
-  Dot,
-  DotIcon,
+  CornerRightDown,
+  ArrowUpRight,
 } from "lucide-react";
 import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardTitle,
-} from "@/components/ui/card";
-
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import banner from "../../public/team/bg.png";
-import farm from "../../public/team/farm.png";
-/* Steps */
-import step1Icon from "../../public/icons/grain-veg-svgrepo-com.svg";
-import step2Icon from "../../public/icons/wheelbarrow-construction-svgrepo-com.svg";
-import step3Icon from "../../public/icons/microorganism-svgrepo-com.svg";
-import step4Icon from "../../public/icons/sprout-svgrepo-com (2).svg";
+
 /* Cards */
-import card2Icon from "../../public/icons/circle-number-2-svgrepo-com.svg";
+import card2Icon from "../../public/icons/pin-svgrepo-com.svg";
 import card1Background from "../../public/icons/flat-design-circular-economy-infographic-template.png";
 import card2Background from "../../public/icons/card2background.png";
 import card3Background from "../../public/icons/flat-design-circular-economy-infographic-template.png";
-import card1Icon from "../../public/icons/circle-number-1-svgrepo-com.svg";
-import card3Icon from "../../public/icons/circle-number-3-svgrepo-com.svg";
+import card1Icon from "../../public/icons/recycle.svg";
+import card3Icon from "../../public/icons/leaf-svgrepo-com.svg";
 /* Logos */
 import logo1 from "../../public/logos/Donaulandkompost.svg";
 import logo2 from "../../public/logos/AWS.svg";
@@ -48,10 +31,16 @@ import logo6 from "../../public/logos/6-WU.png";
 import logo7 from "../../public/logos/7-FH-WRN.png";
 import logo8 from "../../public/logos/Avenue.png";
 import logo9 from "../../public/logos/9-DC.png";
+
 import EmailCapture from "@/components/common/EmailCapture";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { incrementClick } from "../actions";
-import { Separator } from "radix-ui";
+
+// GSAP Imports
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
 type Step = {
   icon: StaticImageData;
   title: string;
@@ -97,6 +86,7 @@ const cards: Cards[] = [
     more: "Im Gegensatz zu vielen Düngern, die tierische Inhaltsstoffe enthalten, ist Brewcycle vollständig pflanzenbasiert. Die Rezeptur vereint verschiedene Nebenprodukte wie landwirtschaftliches Stroh und Melasse aus der Zuckerherstellung zu einem kraftvollen Mix. So entsteht ein nachhaltiges Kreislauf-Produkt aus unterschiedlichen Industrien, ideal für ökologisches und veganes Gärtnern",
   },
 ];
+
 const features: Feature[] = [
   {
     icon: Wheat,
@@ -119,286 +109,396 @@ const features: Feature[] = [
     desc: "Der fertige Dünger lässt Pflanzen gesund gedeihen. So findet alles seinen Weg zurück zur Erde und der Kreis der Natur schließt sich.",
   },
 ];
-const steps: Step[] = [
-  {
-    icon: step1Icon,
-    title: "Ursprung ",
-    desc: "Die Geschichte beginnt bei lokalen Brauereien und landwirtschaftlichen Partnern, bei denen wertvolle Nebenprodukte entstehen",
-  },
-  {
-    icon: step2Icon,
-    title: "Sammlung",
-    desc: "Alle Zutaten werden dann direkt vor Ort gesammelt und für die Weiterverarbeitung vorbereitet",
-  },
-  {
-    icon: step3Icon,
-    title: "Natürliche Aufbereitung",
-    desc: "Auf ganz natürlichem Weg werden diese Schätze der Natur zu einem nährstoffreichen Mix für den Garten verbunden.",
-  },
-  {
-    icon: step4Icon,
-    title: "Wachstum",
-    desc: "Der fertige Dünger lässt Pflanzen gesund gedeihen. So findet alles seinen Weg zurück zur Erde und der Kreis der Natur schließt sich.",
-  },
-];
 
 export default function Home() {
   const [activeId, setActiveId] = useState<string | null>(null);
+  const containerRef = useRef<HTMLElement>(null);
+
+  useGSAP(
+    () => {
+      gsap.registerPlugin(ScrollTrigger);
+
+      // Hero Animation
+      const tl = gsap.timeline();
+      tl.fromTo(
+        ".hero-anim",
+        { y: 40, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          stagger: 0.15,
+          ease: "power3.out",
+          delay: 0.1,
+        },
+      );
+      tl.fromTo(
+        ".hero-image",
+        { scale: 0.9, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 1, ease: "power3.out" },
+        "-=0.6",
+      );
+
+      // Promise Cards
+      gsap.fromTo(
+        ".promise-card",
+        { y: 60, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          stagger: 0.2,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: ".promise-section",
+            start: "top 80%",
+          },
+        },
+      );
+
+      // Process Steps
+      gsap.fromTo(
+        ".process-step",
+        { x: -40, opacity: 0 },
+        {
+          x: 0,
+          opacity: 1,
+          duration: 0.6,
+          stagger: 0.15,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: ".process-section",
+            start: "top 75%",
+          },
+        },
+      );
+
+      // Partners section entrance
+      gsap.fromTo(
+        ".partner-logo",
+        { scale: 0.8, opacity: 0, y: 20 },
+        {
+          scale: 1,
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          stagger: 0.1,
+          ease: "back.out(1.5)",
+          scrollTrigger: {
+            trigger: ".partners-section",
+            start: "top 85%",
+          },
+        },
+      );
+    },
+    { scope: containerRef },
+  );
 
   return (
-    <main className="bg-[#F8F2E8]">
-      <section className="bg-gradient-to-b from-[#ddc5a9] to-[#F8F2E8] relative flex flex-col sm:flex-row   justify-center min-h-svh items-center  w-full justify-center overflow-hidden">
-        <div className=" z-20  px-10  text-left justify-center sm:justify-start flex flex-col  ">
-          <Card className=" sm:my-5 w-full relative bg-transparent  backdrop-blur-[1px] border-none shadow-none  ">
-            <CardContent>
-              <CardTitle>
-                <h1 className="text-6xl mt-10  text-[#9BAD21] font-semibold tracking-tight font-silly  sm:text-7xl">
-                  VON DER BRAUEREI ZUM <br />{" "}
-                  <span className="text-[#3d571c]"> BLÜHENDEN</span>
-                </h1>
-              </CardTitle>
-              <CardDescription>
-                {" "}
-                <div className="px-2 flex  w-fit rounded-lg justify-center  items-center  text-[8px] sm:text-[10px] md:text-[12px] lg:text-[14px] text-[#6B6B6B]">
-                  <p>100% Bio</p>
-                  <DotIcon />
-                  <p className="">Zero Waste</p>
-                  <DotIcon />
-                  <p>Made in Austria</p>
-                </div>
-                <div className=" relative ">
-                  <p className="mt-5 max-w-xl  text-base font-sans  text-[#3d571c] leading-relaxed  sm:text-lg">
-                    Premium Bio-Dünger aus Brauerei- Nebenprodukten. Gib deinem
-                    Garten die Nährstoffe, die er braucht, und reduziere
-                    gleichzeitig Abfall.
-                  </p>
-                  <p className="mt-2 text-black/70 ">
-                    NACHHALTIGE & NATÜRLICHE PFLANZENERNÄHRUNG.
-                  </p>
+    <main
+      ref={containerRef}
+      className="bg-[#F8F2E8] text-black font-sans selection:bg-[#3d571c] selection:text-white"
+    >
+      {/* HERO SECTION */}
+      <section className="relative z-10 flex flex-col xl:flex-row py-12 md:py-24 px-6 md:px-12 xl:px-24 mx-auto max-w-[1400px] justify-between items-center min-h-[85vh] gap-12 xl:gap-0">
+        <div className="text-left flex flex-col xl:basis-1/2 w-full mt-10 xl:mt-0">
+          <div className="hero-anim">
+            <h1 className="text-5xl md:text-6xl lg:text-7xl text-[#3d571c] font-semibold tracking-tight font-silly leading-[1.1]">
+              VON DER BRAUEREI ZUM BLÜHENDEN
+            </h1>
+          </div>
 
-                  {/* CTA */}
+          <div className="hero-anim mt-8 max-w-xl">
+            <p className="text-lg md:text-xl font-sans text-black/70 leading-relaxed font-medium">
+              Premium Bio-Dünger aus Brauerei- Nebenprodukten. Gib deinem Garten
+              die Nährstoffe, die er braucht, und reduziere gleichzeitig Abfall.
+            </p>
+            <p className="mt-4 text-sm md:text-base tracking-[0.2em] text-[#B75922] font-semibold uppercase">
+              NACHHALTIGE & NATÜRLICHE PFLANZENERNÄHRUNG.
+            </p>
+          </div>
 
-                  <Button
-                    asChild
-                    className="h-10 mx-auto sm:mx-0 rounded-xl w-fit flex justify-center sm:justify-start  bg-[#3d571c] mt-10 mb-5 text-white hover:bg-[#3d571c]/90 "
-                  >
-                    <a href="/survey">Jetzt kaufen</a>
-                  </Button>
-
-                  {/* Badges */}
-                </div>
-              </CardDescription>
-
-              {/* Right */}
-            </CardContent>
-          </Card>
-          <Button
-            asChild
-            variant="outline"
-            className="mx-auto bg-inherit border-none w-fit text-[#9BAD21] shadow-none text-2xl font-silly tracking-extrawider  z-20 hover:bg-white"
-          >
-            <Link href="/">
-              Mehr erfahren
-              <ChevronsDown className="h-4 w-4 text-[#9BAD21]  " />
-            </Link>
-          </Button>
+          <div className="hero-anim flex flex-wrap gap-4 mt-10">
+            <Button
+              asChild
+              onClick={() => void incrementClick("buy-now")}
+              className="shadow-xl shadow-[#FD8602]/20 bg-[#3d571c] text-white hover:bg-[#2c4014] transition-all duration-300 hover:scale-105 hover:shadow-2xl px-8 py-6 text-lg "
+            >
+              <Link href="/survey">Jetzt kaufen</Link>
+            </Button>
+            <Button
+              asChild
+              variant="ghost"
+              className="flex border-none backdrop-blur-sm items-center justify-center  transition-all duration-300 hover:scale-105 hover:shadow-xl hover:bg-white px-8 py-6 text-lg  gap-2 text-[#3d571c]"
+            >
+              <Link href="/">
+                Mehr erfahren
+                <CornerRightDown className="w-4 h-4 ml-1 opacity-70" />
+              </Link>
+            </Button>
+          </div>
         </div>
 
-        <div className="">
-          <Image
-            src={banner}
-            alt="Lea  f"
-            width={550}
-            height={550}
-            priority
-            className="object-cover "
-          />
+        <div className="hero-image relative flex flex-col xl:basis-1/2 items-center justify-center w-full max-w-[600px] xl:max-w-none">
+          <div className="relative w-full aspect-square max-w-[550px]">
+            <Image
+              src={banner}
+              alt="BrewCycle Bio-Dünger"
+              fill
+              priority
+              sizes="(max-w-768px) 100vw, 50vw"
+              className="object-cover drop-shadow-2xl hover:scale-[1.03] transition-transform duration-700 ease-out z-10"
+            />
+          </div>
+          <div className="flex  flex-wrap gap-3 mt-12 mb-4">
+            <Badge className="bg-[#B75922]/20 border-[#B75922] mb-4 text-[#B75922]  px-2 py-1.5  font-medium  hover:bg-[#CDB38E]/30 transition-colors uppercase tracking-[0.2em] rounded-full">
+              100% Bio
+            </Badge>
+            <Badge className="bg-[#B75922]/20 border-[#B75922] mb-4 text-[#B75922]  px-2 py-1.5  font-medium  hover:bg-[#CDB38E]/30 transition-colors uppercase tracking-[0.2em] rounded-full">
+              Zero Waste
+            </Badge>
+            <Badge className="bg-[#B75922]/20 border-[#B75922] mb-4 text-[#B75922]  px-2 py-1.5  font-medium  hover:bg-[#CDB38E]/30 transition-colors uppercase tracking-[0.2em] rounded-full">
+              Made in Austria
+            </Badge>
+          </div>
         </div>
       </section>
 
-      <section className="mx-auto py-20 bg-[#F8F2E8] bg-cover px-6   ">
-        <div className=" items-center relative justify-center h-full  text-center flex flex-col">
-          <h2 className="font-serif text-4xl pb-10 tracking-tight font-silly text-[#1f1f1f] sm:text-5xl">
+      {/* PROMISE SECTION */}
+      <section className="promise-section relative mx-auto py-24 px-6 md:px-12 max-w-[1400px] z-10">
+        <div className="items-center justify-center text-center flex flex-col mb-16">
+          <Badge className="mb-2 bg-[#3d571c]/10 text-[#3d571c] border-[#3d571c]/20  px-2 py-1.5  font-medium hover:bg-[#1F6F50]/15 transition-colors uppercase tracking-[0.2em] rounded-full">
+            Werte
+          </Badge>
+          <h2 className="text-4xl md:text-5xl font-semibold tracking-tight font-silly text-[#3d571c] mb-6 max-w-3xl">
             UNSER VERSPRECHEN AN DIE NATUR
           </h2>
-
-          <div className="text-center font-sans text-[#6B6B6B] pb-10">
-            Bei uns steht der Kreislauf der Natur im Mittelpunkt. Alles, was die
-            Erde hervorbringt, soll zu ihr zurückkehren.
-            <br />{" "}
+          <div className="text-center font-sans text-black/60 text-lg md:text-lg max-w-2xl leading-relaxed">
+            <p className="mb-2">
+              Bei uns steht der Kreislauf der Natur im Mittelpunkt. Alles, was
+              die Erde hervorbringt, soll zu ihr zurückkehren.
+            </p>
             <p>
               Wir entwickeln Produkte, die den Garten stärken und die Umwelt
               schützen.
             </p>
           </div>
-          <div className="flex flex-col  sm:flex-row gap-12 mb-20">
-            {cards.map((c) => {
-              const isOpen = activeId === c.id;
+        </div>
 
-              return (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 xl:gap-12">
+          {cards.map((c) => {
+            const isOpen = activeId === c.id;
+
+            return (
+              <div
+                key={c.id}
+                className="promise-card group relative w-full h-[350px] flex flex-col rounded-2xl bg-white shadow-xl shadow-black/5 hover:shadow-2xl hover:shadow-[#3d571c]/10 transition-all duration-500 ease-out border border-white/50 overflow-hidden"
+              >
+                {/* Overlay Hover Effect BG */}
+                <div className="absolute inset-0 bg-gradient-to-br from-[#F8F2E8]/40 to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0 pointer-events-none" />
+
+                {/* Learn More Overlay (When Open) */}
                 <div
-                  key={c.id}
-                  className="
-          relative w-full rounded-xl p-4 bg-white border border-[#E6E2D9] mb-5
-          transition-transform duration-300 ease-out relative z-20 
-          hover:-translate-y-0.5 
-        "
+                  className={[
+                    "absolute inset-0 z-30 flex flex-col rounded-[2rem] p-8 border border-white/20 bg-white/95 backdrop-blur-xl",
+                    "transition-all duration-500 ease-out shadow-inner",
+                    isOpen
+                      ? "opacity-100 scale-100 pointer-events-auto"
+                      : "opacity-0 scale-95 pointer-events-none",
+                  ].join(" ")}
                 >
-                  {/* Overlay Learn More*/}
-                  <div
-                    className={[
-                      "absolute inset-0 z-20 rounded-xl border shadow-lg backdrop-blur-lg",
-                      "transition-all duration-300 ease-out ",
-                      isOpen
-                        ? "opacity-100 scale-100 pointer-events-auto h-full"
-                        : "opacity-0 scale-[0.65] pointer-events-none ",
-                    ].join(" ")}
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="absolute top-4 right-4 rounded-full bg-black/5 hover:bg-black/10 text-black/70 hover:text-black transition-colors"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setActiveId(null);
+                    }}
                   >
-                    <div className="relative flex items-start justify-between p-4 gap-3">
-                      <p
-                        className={[
-                          "text-sm text-muted-foreground",
-                          "transition-all duration-300 ease-out delay-75",
-                          isOpen
-                            ? "opacity-100 translate-y-0"
-                            : "opacity-0 translate-y-1",
-                        ].join(" ")}
-                      >
-                        {c.more}
-                      </p>
+                    <X className="w-5 h-5" />
+                  </Button>
 
-                      <Button
-                        variant="ghost"
-                        className="h-8 absolute top-2 right-2"
-                        onClick={() => setActiveId(null)}
-                      >
-                        <X />
-                      </Button>
-                    </div>
+                  <Image
+                    src={c.icon}
+                    alt={c.title}
+                    width={150}
+                    height={150}
+                    className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.03] grayscale pointer-events-none filter drop-shadow-md mix-blend-multiply"
+                  />
+
+                  <div className="relative flex flex-col h-full z-10 mt-6 overflow-y-auto pr-2">
+                    <h3 className="font-silly text-xl text-[#3d571c] mb-4">
+                      {c.title}
+                    </h3>
+                    <p
+                      className={[
+                        "text-base font-sans leading-relaxed text-black/80",
+                        "transition-all text-start duration-500 delay-100",
+                        isOpen
+                          ? "opacity-100 translate-y-0"
+                          : "opacity-0 translate-y-4",
+                      ].join(" ")}
+                    >
+                      {c.more}
+                    </p>
                   </div>
+                </div>
 
-                  {/* Card content */}
-
-                  <div
-                    className={[
-                      "flex flex-col justify-between relative w-full h-full items-start p-2 z-10",
-                      "transition-all duration-300 ease-out ",
-                      isOpen
-                        ? "opacity-30 scale-[0.99]"
-                        : "opacity-100 scale-100",
-                    ].join(" ")}
-                  >
+                {/* Card Content (Default State) */}
+                <div
+                  className={[
+                    "relative flex flex-col h-full z-10 p-6",
+                    "transition-all duration-500 ease-out",
+                    isOpen
+                      ? "opacity-0 scale-95 blur-sm"
+                      : "opacity-100 scale-100",
+                  ].join(" ")}
+                >
+                  <div className="flex bg-[#F8F2E8] w-16 h-16 rounded-2xl items-center justify-center mb-8 shadow-sm group-hover:scale-110 transition-transform duration-500 group-hover:bg-[#3d571c]/10">
                     <Image
                       src={c.icon}
                       alt={`${c.title} icon`}
-                      width={40}
-                      height={40}
-                      className="absolute top-[-22px]  right-[-28px]"
+                      width={32}
+                      height={32}
+                      className="opacity-80 group-hover:opacity-100 transition-opacity"
                     />
-                    <div className="  flex  rounded-md ">
-                      <h2 className="text-[#3d571c] text-start font-bold tracking-tight font-sans">
-                        {c.title}
-                      </h2>
-                    </div>
+                  </div>
 
-                    <p className="mt-2 text-sm z-10 font-sans text-start text-muted-foreground">
+                  <div className="flex-1">
+                    <h2 className="text-[#3d571c] font-silly text-2xl text-start font-bold tracking-tight font-sans leading-snug mb-4 group-hover:text-[#2c4014] transition-colors">
+                      {c.title}
+                    </h2>
+                    <p className="text-base z-10 font-sans text-start text-black/60 leading-relaxed font-medium">
                       {c.desc}
                     </p>
+                  </div>
 
+                  <div className="mt-6">
                     <Button
                       onClick={() => {
                         setActiveId(c.id);
                         void incrementClick(`card-${c.id}`);
                       }}
                       variant="ghost"
-                      className="mt-3 px-0 font-sans z-20"
+                      className="group/btn flex items-center gap-2 border-b-2 border-transparent hover:border-[#3d571c] rounded-none p-0 font-sans z-20 hover:bg-transparent text-[#B75922] hover:text-[#3d571c] transition-all font-semibold"
                     >
                       Mehr erfahren
+                      <ArrowUpRight className="w-4 h-4 group-hover/btn:translate-y-1 group-hover/btn:translate-x-1 transition-transform" />
                     </Button>
                   </div>
                 </div>
-              );
-            })}
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* PROCESS SECTION */}
+      <section className="relative z-10 process-section">
+        <div className="bg-[#3d571c] text-white my-12 rounded-2xl mx-4 md:mx-12 xl:mx-24 overflow-hidden shadow-2xl relative">
+          <div className="flex flex-col xl:flex-row relative z-10 w-full">
+            <div className="w-full relative xl:basis-7/12 p-8 md:p-16 lg:p-20">
+              <div className="flex flex-col h-full justify-center">
+                <Badge className="bg-white/10 text-white border-white/20  px-2 py-1.5  font-medium hover:bg-[#1F6F50]/15 transition-colors uppercase tracking-[0.2em] rounded-full">
+                  Der Prozess
+                </Badge>
+
+                <h2 className="font-serif text-white text-4xl md:text-5xl lg:text-6xl leading-tight font-silly tracking-tight mb-8 max-w-2xl">
+                  VOM BRAU ZUR BLÜTE
+                </h2>
+
+                <p className="max-w-xl font-sans text-white/80 text-lg md:text-xl leading-relaxed mb-12 font-light">
+                  Unser einfacher Vier-Schritte-Prozess schafft einen
+                  nachhaltigen Kreislauf, der allen zugute kommt.
+                </p>
+
+                <div className="space-y-4 md:space-y-6">
+                  {features.map((f, i) => {
+                    const Icon = f.icon;
+                    return (
+                      <div
+                        key={f.title}
+                        className="process-step flex relative items-start p-6 gap-6  rounded-3xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/20 transition-all duration-300 backdrop-blur-sm group"
+                      >
+                        <span className=" absolute left-1/2 top-1/2 text-[#FDC54B] -translate-y-1/2 -translate-x-1/2 text-8xl font-bold opacity-15 font-sans ">
+                          0{i + 1}
+                        </span>
+                        <div className="flex gap-1 shrink-0 w-14 h-14 items-center justify-center rounded-2xl bg-white/10 shadow-inner group-hover:scale-110 group-hover:bg-[#B75922] transition-all duration-500">
+                          <Icon
+                            strokeWidth={1.5}
+                            className="h-7 w-7 text-[#FDC54B] group-hover:text-white transition-colors duration-500"
+                          />
+                        </div>
+
+                        <div className="flex-1 mt-1">
+                          <div className="flex items-center gap-3 mb-2">
+                            <h3 className="font-serif text-white font-silly text-2xl tracking-wide">
+                              {f.title}
+                            </h3>
+                          </div>
+                          <p className="text-base md:text-lg leading-relaxed text-white/70 font-sans font-light">
+                            {f.desc}
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            <div className="flex w-full xl:basis-5/12 justify-center items-center p-8 md:p-16 lg:p-20 bg-white  ">
+              <div className="w-full max-w-md">
+                <EmailCapture />
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      <div className="flex items-center justify-center flex-col bg-[#F8F2E8] xl:flex-row ">
-        <section className="w-full  relative  basis-1/3 ">
-          <div className=" px-6 py-16 flex flex-col items-center">
-            <div className="">
-              <h2 className="font-serif text-black text-4xl leading-tight font-silly tracking-tight  sm:text-5xl">
-                VOM BRAU ZUR BLÜTE
-              </h2>
+      {/* PARTNERS SECTION */}
+      <section className="partners-section flex w-full flex-col py-24 px-6 md:px-12 max-w-[1400px] mx-auto relative z-10">
+        <div className="text-center flex flex-col items-center mb-16">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl tracking-tight font-silly text-[#3d571c] mb-6">
+            UNSERE PARTNER
+          </h2>
 
-              <p className="mt-5 max-w-xl font-sans text-black/70 text-sm leading-6 ">
-                Unser einfacher Vier-Schritte-Prozess schafft einen nachhaltigen
-                Kreislauf , der allen zugute kommt
-              </p>
+          <Badge className="bg-[#CDB38E]/20 border-[#CDB38E] mb-4 text-[#ab8c50]  px-2 py-1.5  font-medium  hover:bg-[#CDB38E]/30 transition-colors uppercase tracking-[0.2em] rounded-full">
+            Der Prozess
+          </Badge>
 
-              <div className="mt-10 space-y-4 ">
-                {features.map((f) => {
-                  const Icon = f.icon;
-                  return (
-                    <div
-                      key={f.title}
-                      className="flex items-start gap-4 rounded-2xl bg-[#3d571c] px-5 py-4"
-                    >
-                      <div className="flex p-2 items-center justify-center rounded-xl bg-white/10">
-                        <Icon className="h-8 w-8 text-[#F8F2E8]" />
-                      </div>
-
-                      <div>
-                        <h3 className="font-serif text-[#F8F2E8]  font-silly text-xl ">
-                          {f.title}
-                        </h3>
-                        <p className="mt-1 text-sm leading-6 text-[#F8F2E8] font-sans ">
-                          {f.desc}
-                        </p>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        </section>
-        <div className=" flex  w-full xl:basis-1/3    ">
-          <EmailCapture />
+          <div className="w-16 h-1 bg-[#3d571c]/20 rounded-full" />
         </div>
-      </div>
-      <section className="flex w-full flex-col">
-        <h2 className=" text-4xl xl:mx-auto  text-center xl:text-left py-10 tracking-tight font-silly text-[#1f1f1f] sm:text-5xl">
-          UNSERE PARTNER
-        </h2>
-        <div className="grid-cols-2 sm:grid-cols-3 xl:grid-cols-9  gap-y-10 gap-x-10 xl:flex-row grid place-items-center flex w-full p-10">
-          <Link href="https://egger-bier.at">
-            <Image src={logo4} alt="something" width="180" height="180" />
-          </Link>
-          <Link href="https://www.aws.at">
-            <Image src={logo2} alt="something" width="180" height="180" />
-          </Link>
-          <Link href="https://accent.at/">
-            <Image src={logo5} alt="something" width="180" height="180" />
-          </Link>
-          <Link href="https://www.stp-smartup.at/">
-            <Image src={logo3} alt="something" width="180" height="180" />
-          </Link>
-          <Link href="https://www.donaulandkompost.at/">
-            <Image src={logo1} alt="something" width="180" height="180" />
-          </Link>
-          <Link href="https://www.wu.ac.at/">
-            <Image src={logo6} alt="something" width="180" height="180" />
-          </Link>
-          <Link href="https://www.fhwn.ac.at/">
-            <Image src={logo7} alt="something" width="180" height="180" />
-          </Link>
-          <Link href="https://entrepreneurshipavenue.com/">
-            <Image src={logo8} alt="something" width="180" height="180" />
-          </Link>
-          <Link href="https://danubecup.eu/">
-            <Image src={logo9} alt="something" width="180" height="180" />
-          </Link>
+
+        <div className="flex flex-wrap justify-center items-center gap-10 md:gap-16 lg:gap-20 max-w-5xl mx-auto">
+          {[
+            { src: logo4, link: "https://egger-bier.at" },
+            { src: logo2, link: "https://www.aws.at" },
+            { src: logo5, link: "https://accent.at/" },
+            { src: logo3, link: "https://www.stp-smartup.at/" },
+            { src: logo1, link: "https://www.donaulandkompost.at/" },
+            { src: logo6, link: "https://www.wu.ac.at/" },
+            { src: logo7, link: "https://www.fhwn.ac.at/" },
+            { src: logo8, link: "https://entrepreneurshipavenue.com/" },
+            { src: logo9, link: "https://danubecup.eu/" },
+          ].map((partner, index) => (
+            <Link
+              key={index}
+              href={partner.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="partner-logo group relative flex items-center justify-center p-4 hover:scale-110 transition-transform duration-500 will-change-transform"
+            >
+              <Image
+                src={partner.src}
+                alt={`Partner ${index + 1}`}
+                width={120}
+                height={120}
+                className="object-contain w-auto h-12 md:h-16 lg:h-20 grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500 mix-blend-multiply"
+              />
+            </Link>
+          ))}
         </div>
       </section>
     </main>

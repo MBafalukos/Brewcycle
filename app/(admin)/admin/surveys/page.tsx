@@ -16,7 +16,14 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Button } from "@/components/ui/button";
+import { Download } from "lucide-react";
 import { format } from "date-fns";
+import {
+  formatSurveyAnswers,
+  convertToCSV,
+  downloadCSV,
+} from "@/lib/survey-utils";
 
 export default function AdminSurveysPage() {
   const [surveys, setSurveys] = useState<any[]>([]);
@@ -38,6 +45,43 @@ export default function AdminSurveysPage() {
     loadData();
   }, []);
 
+  const handleExportCSV = () => {
+    if (surveys.length === 0) return;
+
+    // Flatten data for CSV
+    const csvData = surveys.map((s) => {
+      const formatted = formatSurveyAnswers(s.answers || {});
+      const row: any = {
+        Date: s.created_at
+          ? format(new Date(s.created_at), "yyyy-MM-dd HH:mm")
+          : "",
+        Email: s.email || "Anonymous",
+        WaitlistConsent: s.waitlist_consent ? "Yes" : "No",
+        ContactConsent: s.contact_me_consent ? "Yes" : "No",
+      };
+
+      formatted.forEach((item) => {
+        row[item.label] = item.value;
+      });
+
+      return row;
+    });
+
+    // Get all unique labels to use as headers
+    const headers = ["Date", "Email", "WaitlistConsent", "ContactConsent"];
+    const questionLabels = Array.from(
+      new Set(
+        csvData
+          .flatMap((row) => Object.keys(row))
+          .filter((key) => !headers.includes(key)),
+      ),
+    );
+    const allHeaders = [...headers, ...questionLabels];
+
+    const csvContent = convertToCSV(csvData, allHeaders);
+    downloadCSV(csvContent, `surveys_${format(new Date(), "yyyyMMdd")}.csv`);
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[50vh]">
@@ -50,11 +94,17 @@ export default function AdminSurveysPage() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-serif text-gray-900">Surveys</h1>
-        <p className="text-gray-500 mt-1">
-          View all collected survey responses.
-        </p>
+      <div className="flex justify-between items-start">
+        <div>
+          <h1 className="text-3xl font-serif text-gray-900">Surveys</h1>
+          <p className="text-gray-500 mt-1">
+            View all collected survey responses.
+          </p>
+        </div>
+        <Button onClick={handleExportCSV} variant="outline" className="gap-2">
+          <Download className="h-4 w-4" />
+          Export CSV
+        </Button>
       </div>
 
       <div className="rounded-md border bg-white">
@@ -79,70 +129,72 @@ export default function AdminSurveysPage() {
                 </TableCell>
               </TableRow>
             ) : (
-              surveys.map((survey) => (
-                <TableRow key={survey.id}>
-                  <TableCell>
-                    {survey.created_at
-                      ? format(new Date(survey.created_at), "MMM d, yyyy HH:mm")
-                      : "N/A"}
-                  </TableCell>
-                  <TableCell>{survey.email || "Anonymous"}</TableCell>
-                  <TableCell>
-                    {survey.waitlist_consent ? "Yes" : "No"}
-                  </TableCell>
-                  <TableCell>
-                    {survey.contact_me_consent ? "Yes" : "No"}
-                  </TableCell>
-                  <TableCell className="min-w-[400px]">
-                    <Accordion type="single" collapsible className="w-full">
-                      <AccordionItem
-                        value={`item-${survey.id}`}
-                        className="border-none"
-                      >
-                        <AccordionTrigger className="w-auto h-8 px-3 py-0 flex-none justify-center items-center text-xs font-medium rounded-md border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground text-foreground transition-colors [&[data-state=closed]>.hide-text]:hidden [&[data-state=closed]>.show-text]:block [&[data-state=open]>.hide-text]:block [&[data-state=open]>.show-text]:hidden hover:no-underline [&>svg]:ml-2">
-                          <span className="show-text">Show answers</span>
-                          <span className="hide-text">Hide answers</span>
-                        </AccordionTrigger>
-                        <AccordionContent>
-                          <div className="mt-4 border rounded-md overflow-hidden bg-white shadow-sm">
-                            <Table>
-                              <TableBody>
-                                {survey.answers &&
-                                typeof survey.answers === "object" ? (
-                                  Object.entries(survey.answers).map(
-                                    ([key, value], idx) => (
+              surveys.map((survey) => {
+                const formattedAnswers = formatSurveyAnswers(
+                  survey.answers || {},
+                );
+                return (
+                  <TableRow key={survey.id}>
+                    <TableCell>
+                      {survey.created_at
+                        ? format(
+                            new Date(survey.created_at),
+                            "MMM d, yyyy HH:mm",
+                          )
+                        : "N/A"}
+                    </TableCell>
+                    <TableCell>{survey.email || "Anonymous"}</TableCell>
+                    <TableCell>
+                      {survey.waitlist_consent ? "Yes" : "No"}
+                    </TableCell>
+                    <TableCell>
+                      {survey.contact_me_consent ? "Yes" : "No"}
+                    </TableCell>
+                    <TableCell className="min-w-[400px]">
+                      <Accordion type="single" collapsible className="w-full">
+                        <AccordionItem
+                          value={`item-${survey.id}`}
+                          className="border-none"
+                        >
+                          <AccordionTrigger className="w-auto h-8 px-3 py-0 flex-none justify-center items-center text-xs font-medium rounded-md hover:bg-accent hover:text-accent-foreground  [&[data-state=closed]>.hide-text]:hidden [&[data-state=closed]>.show-text]:block [&[data-state=open]>.hide-text]:block [&[data-state=open]>.show-text]:hidden hover:no-underline [&>svg]:ml-2">
+                            <span className="show-text">Show answers</span>
+                            <span className="hide-text">Hide answers</span>
+                          </AccordionTrigger>
+                          <AccordionContent>
+                            <div className="mt-4 border rounded-md overflow-hidden bg-white shadow-sm">
+                              <Table>
+                                <TableBody>
+                                  {formattedAnswers.length > 0 ? (
+                                    formattedAnswers.map((item, idx) => (
                                       <TableRow
                                         key={idx}
                                         className="hover:bg-transparent"
                                       >
                                         <TableCell className="font-medium bg-muted/30 w-1/3 text-xs align-top border-r">
-                                          {key}
+                                          {item.label}
                                         </TableCell>
                                         <TableCell className="text-xs whitespace-pre-wrap">
-                                          {typeof value === "object" &&
-                                          value !== null
-                                            ? JSON.stringify(value, null, 2)
-                                            : String(value)}
+                                          {item.value}
                                         </TableCell>
                                       </TableRow>
-                                    ),
-                                  )
-                                ) : (
-                                  <TableRow className="hover:bg-transparent">
-                                    <TableCell className="text-xs text-muted-foreground p-4 text-center">
-                                      No survey data available.
-                                    </TableCell>
-                                  </TableRow>
-                                )}
-                              </TableBody>
-                            </Table>
-                          </div>
-                        </AccordionContent>
-                      </AccordionItem>
-                    </Accordion>
-                  </TableCell>
-                </TableRow>
-              ))
+                                    ))
+                                  ) : (
+                                    <TableRow className="hover:bg-transparent">
+                                      <TableCell className="text-xs text-muted-foreground p-4 text-center">
+                                        No survey data available.
+                                      </TableCell>
+                                    </TableRow>
+                                  )}
+                                </TableBody>
+                              </Table>
+                            </div>
+                          </AccordionContent>
+                        </AccordionItem>
+                      </Accordion>
+                    </TableCell>
+                  </TableRow>
+                );
+              })
             )}
           </TableBody>
         </Table>

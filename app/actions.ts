@@ -110,7 +110,7 @@ export async function updateSurveyWithEmail(data: SurveyEmailData) {
             );
             if (waitlistError) throw waitlistError;
         }
-
+        
         return { success: true };
     } catch (err) {
         if (err instanceof z.ZodError) return { success: false, error: err.issues[0].message };
@@ -135,6 +135,7 @@ export async function joinWaitlist(emailInput: string) {
         );
 
         if (error) throw error;
+        
         return { success: true };
     } catch (err) {
         if (err instanceof z.ZodError) return { success: false, error: err.issues[0].message };
