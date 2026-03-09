@@ -28,7 +28,7 @@ import logo1 from "../../public/logos/Donaulandkompost.svg";
 import logo2 from "../../public/logos/AWS.svg";
 import logo3 from "../../public/logos/Smartup.png";
 import logo4 from "../../public/logos/1-Egger.png";
-import logo5 from "../../public/logos/Acent.png";
+import logo5 from "../../public/logos/Accent.svg";
 import logo6 from "../../public/logos/6-WU.png";
 import logo7 from "../../public/logos/7-FH-WRN.png";
 import logo8 from "../../public/logos/Avenue.png";
