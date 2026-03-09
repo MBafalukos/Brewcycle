@@ -19,7 +19,7 @@ import {
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
 import Image from "next/image";
-import { Menu } from "lucide-react";
+import { Menu, Plus } from "lucide-react";
 
 type NavItem = {
   label: string;
@@ -107,10 +107,11 @@ export default function Header({
         <div className="hidden md:flex">
           <Button
             asChild
-            className="shadow-md shadow-[#FD8602]/30 border-black/20 bg-[#3d571c]"
+            className="shadow-md shadow-[#FD8602]/30 border-black/20 rounded-xl bg-[#3d571c]"
           >
             <Link className="text-white  tracking-tight" href={cta.href}>
               {cta.label}
+              <Plus strokeWidth={3} />
             </Link>
           </Button>
         </div>

@@ -107,7 +107,7 @@ export default function ContactPage() {
               <Badge className="bg-[#1F6F50]/10 mb-5 text-[#1F6F50] border-[#1F6F50]/20 px-4 py-1.5 text-sm font-medium hover:bg-[#1F6F50]/15 transition-colors uppercase tracking-[0.2em] rounded-full">
                 Kontakt
               </Badge>
-              <h1 className="text-4xl font-bold tracking-tight text-[#3d571c] sm:text-5xl lg:text-6xl">
+              <h1 className="text-4xl  tracking-tight text-[#3d571c] font-silly sm:text-5xl lg:text-6xl">
                 Lass uns <br />
                 <span className="text-black/80">sprechen.</span>
               </h1>

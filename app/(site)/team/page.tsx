@@ -23,22 +23,25 @@ const TEAM: TeamMember[] = [
     name: "Aggeliki Sitara",
     role: "CEO & CTO",
     location: "Austria",
-    bio: "Building sustainable plant nutrition from brewery by-products.",
+    bio: "Entwicklung nachhaltiger Pflanzennährstoffe aus Brauerei-Nebenprodukten.",
     imageSrc: "/team/Angeliki.jpg",
     links: [
-      { type: "linkedin", href: "#" },
+      { type: "linkedin", href: "https://www.linkedin.com/in/angelikisitara/" },
       { type: "email", href: "mailto:angeliki@brewcycle.at" },
     ],
   },
   {
     id: "2",
-    name: "Filip Dvoracek",
+    name: "Filip Dvořáček",
     role: "CMO & CTO",
     location: "Vienna",
-    bio: "Product, partnerships, and operations.",
+    bio: "Produkt, Partnerschaften und operative Abläufe.",
     imageSrc: "/team/Filip.jpg",
     links: [
-      { type: "linkedin", href: "#" },
+      {
+        type: "linkedin",
+        href: "https://www.linkedin.com/in/filip-dvo%C5%99%C3%A1%C4%8Dek-5766b52b8/",
+      },
       { type: "email", href: "mailto:filip@brewcycle.at" },
     ],
   },
@@ -59,7 +62,7 @@ export default function TeamPage() {
           <Badge className="bg-[#1F6F50]/10 text-[#1F6F50] border-[#1F6F50]/20 px-4 py-1.5 text-sm font-medium hover:bg-[#1F6F50]/15 transition-colors uppercase tracking-[0.2em] rounded-full">
             Unser Team
           </Badge>
-          <h1 className="text-4xl font-bold tracking-tight text-[#3d571c] sm:text-5xl lg:text-6xl max-w-3xl">
+          <h1 className="text-4xl font-silly font-bold tracking-tight text-[#3d571c] sm:text-5xl lg:text-6xl max-w-3xl">
             Die Menschen hinter <span className="text-black/80">Brewcycle</span>
           </h1>
           <p className="max-w-2xl text-lg text-muted-foreground leading-relaxed">
@@ -74,9 +77,9 @@ export default function TeamPage() {
           {TEAM.map((member) => (
             <Card
               key={member.id}
-              className="group relative overflow-hidden border-0 bg-white/40 backdrop-blur-md shadow-lg shadow-[#FD8602]/20 ring-1 ring-black/5 rounded-lg transition-all duration-500 hover:shadow-2xl hover:shadow-[#1F6F50]/10 hover:-translate-y-1"
+              className="group relative overflow-hidden border-0 bg-white backdrop-blur-md shadow-lg shadow-[#FD8602]/20 ring-1 ring-black/5 rounded-lg transition-all duration-500 hover:shadow-2xl hover:shadow-[#1F6F50]/10 hover:-translate-y-1"
             >
-              <CardContent className="p">
+              <CardContent className="h-full">
                 <div className="flex flex-col sm:flex-row h-full">
                   {/* Image Container */}
                   <div className="relative w-full sm:w-2/5 aspect-[4/5]  sm:aspect-auto overflow-hidden">
@@ -101,8 +104,8 @@ export default function TeamPage() {
                   </div>
 
                   {/* Content Area */}
-                  <div className="flex-1 p-8 sm:p-10 flex flex-col justify-between">
-                    <div className="space-y-4">
+                  <div className="flex-1 p-8 sm:p-10 flex flex-col  justify-between">
+                    <div className="space-y-4 ">
                       <div className="space-y-1">
                         <h2 className="text-2xl font-bold text-foreground transition-colors group-hover:text-[#1F6F50]">
                           {member.name}
@@ -121,7 +124,7 @@ export default function TeamPage() {
                       </div>
 
                       {member.bio && (
-                        <p className="text-sm leading-relaxed text-muted-foreground font-medium line-clamp-4">
+                        <p className="text-sm  leading-relaxed text-muted-foreground font-medium line-clamp-4">
                           {member.bio}
                         </p>
                       )}
@@ -136,7 +139,7 @@ export default function TeamPage() {
                             asChild
                             variant="ghost"
                             size="icon"
-                            className="h-10 w-10 rounded-xl bg-white border border-transparent shadow-sm hover:border-[#1F6F50]/20 hover:bg-[#1F6F50]/5 hover:text-[#1F6F50] transition-all"
+                            className="flex bg-white w-12 h-12 border-r rounded-none border-black pr-0 h-fit items-center justify-center   transition-all duration-400 "
                           >
                             <a
                               href={link.href}
@@ -144,7 +147,7 @@ export default function TeamPage() {
                               rel="noreferrer"
                               title={link.type}
                             >
-                              <Icon className="h-5 w-5" />
+                              <Icon className=" group-hover:text-[#b75922] transition-all duration-700 h-12 w-12" />
                               <span className="sr-only">{link.type}</span>
                             </a>
                           </Button>

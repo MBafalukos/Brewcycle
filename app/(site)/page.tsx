@@ -7,6 +7,8 @@ import {
   CirclePile,
   CornerRightDown,
   ArrowUpRight,
+  Recycle,
+  MapPinCheckInside,
 } from "lucide-react";
 import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
@@ -40,6 +42,9 @@ import { incrementClick } from "../actions";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 type Step = {
   icon: StaticImageData;
@@ -116,8 +121,6 @@ export default function Home() {
 
   useGSAP(
     () => {
-      gsap.registerPlugin(ScrollTrigger);
-
       // Hero Animation
       const tl = gsap.timeline();
       tl.fromTo(
@@ -176,7 +179,7 @@ export default function Home() {
       // Partners section entrance
       gsap.fromTo(
         ".partner-logo",
-        { scale: 0.8, opacity: 0, y: 20 },
+        { opacity: 0, y: 20 },
         {
           scale: 1,
           opacity: 1,
@@ -222,19 +225,24 @@ export default function Home() {
             <Button
               asChild
               onClick={() => void incrementClick("buy-now")}
-              className="shadow-xl shadow-[#FD8602]/20 bg-[#3d571c] text-white hover:bg-[#2c4014] transition-all duration-300 hover:scale-105 hover:shadow-2xl px-8 py-6 text-lg "
+              className="shadow-xl rounded-xl shadow-[#FD8602]/20 bg-[#3d571c] text-white hover:bg-[#2c4014] transition-all duration-300 hover:scale-105 hover:shadow-2xl px-8 py-6 text-lg "
             >
               <Link href="/survey">Jetzt kaufen</Link>
             </Button>
             <Button
-              asChild
               variant="ghost"
-              className="flex border-none backdrop-blur-sm items-center justify-center  transition-all duration-300 hover:scale-105 hover:shadow-xl hover:bg-white px-8 py-6 text-lg  gap-2 text-[#3d571c]"
+              onClick={() => {
+                gsap.to(window, {
+                  duration: 1.2,
+                  scrollTo: { y: "#promise-section", offsetY: 40 },
+                  ease: "power4.inOut",
+                });
+                void incrementClick("learn-more-scroll");
+              }}
+              className="flex border-none backdrop-blur-sm rounded-xl items-center justify-center transition-all duration-300 hover:scale-105 hover:shadow-xl hover:bg-white px-8 py-6 text-lg gap-2 text-[#3d571c]"
             >
-              <Link href="/">
-                Mehr erfahren
-                <CornerRightDown className="w-4 h-4 ml-1 opacity-70" />
-              </Link>
+              Mehr erfahren
+              <CornerRightDown className="w-4 h-4 ml-1 opacity-70 animate-bounce" />
             </Button>
           </div>
         </div>
@@ -250,26 +258,33 @@ export default function Home() {
               className="object-cover drop-shadow-2xl hover:scale-[1.03] transition-transform duration-700 ease-out z-10"
             />
           </div>
-          <div className="flex  flex-wrap gap-3 mt-12 mb-4">
-            <Badge className="bg-[#B75922]/20 border-[#B75922] mb-4 text-[#B75922]  px-2 py-1.5  font-medium  hover:bg-[#CDB38E]/30 transition-colors uppercase tracking-[0.2em] rounded-full">
+          <div className="flex justify-center flex-wrap gap-3 mt-12 mb-4">
+            <Badge className="bg-[#CDB38E]/20 border-[#CDB38E] mb-4 text-[#ab8c50]  px-2 py-1.5  font-medium  hover:bg-[#CDB38E]/30 transition-colors uppercase tracking-[0.2em] rounded-full">
               100% Bio
+              <Sprout className="text-[#1a4314]" />
             </Badge>
-            <Badge className="bg-[#B75922]/20 border-[#B75922] mb-4 text-[#B75922]  px-2 py-1.5  font-medium  hover:bg-[#CDB38E]/30 transition-colors uppercase tracking-[0.2em] rounded-full">
+            <Badge className="bg-[#CDB38E]/20 border-[#CDB38E] mb-4 text-[#ab8c50]  px-2 py-1.5  font-medium  hover:bg-[#CDB38E]/30 transition-colors uppercase tracking-[0.2em] rounded-full">
               Zero Waste
+              <Recycle className="text-[#1a4314]" />
             </Badge>
-            <Badge className="bg-[#B75922]/20 border-[#B75922] mb-4 text-[#B75922]  px-2 py-1.5  font-medium  hover:bg-[#CDB38E]/30 transition-colors uppercase tracking-[0.2em] rounded-full">
+            <Badge className="bg-[#CDB38E]/20 border-[#CDB38E] mb-4 text-[#ab8c50]  px-2 py-1.5  font-medium  hover:bg-[#CDB38E]/30 transition-colors uppercase tracking-[0.2em] rounded-full">
               Made in Austria
+              <MapPinCheckInside className="text-[#1a4314]" />
             </Badge>
           </div>
         </div>
       </section>
 
       {/* PROMISE SECTION */}
-      <section className="promise-section relative mx-auto py-24 px-6 md:px-12 max-w-[1400px] z-10">
+      <section
+        id="promise-section"
+        className="promise-section relative mx-auto py-24 px-6 md:px-12 max-w-[1400px] z-10"
+      >
         <div className="items-center justify-center text-center flex flex-col mb-16">
-          <Badge className="mb-2 bg-[#3d571c]/10 text-[#3d571c] border-[#3d571c]/20  px-2 py-1.5  font-medium hover:bg-[#1F6F50]/15 transition-colors uppercase tracking-[0.2em] rounded-full">
+          <Badge className="bg-[#CDB38E]/20 border-[#CDB38E] mb-4 text-[#ab8c50]  px-2 py-1.5  font-medium  hover:bg-[#CDB38E]/30 transition-colors uppercase tracking-[0.2em] rounded-full">
             Werte
           </Badge>
+
           <h2 className="text-4xl md:text-5xl font-semibold tracking-tight font-silly text-[#3d571c] mb-6 max-w-3xl">
             UNSER VERSPRECHEN AN DIE NATUR
           </h2>
@@ -292,19 +307,16 @@ export default function Home() {
             return (
               <div
                 key={c.id}
-                className="promise-card group relative w-full h-[350px] flex flex-col rounded-2xl bg-white shadow-xl shadow-black/5 hover:shadow-2xl hover:shadow-[#3d571c]/10 transition-all duration-500 ease-out border border-white/50 overflow-hidden"
+                className="promise-card group relative w-full h-[350px] flex flex-col rounded-2xl bg-white shadow-md shadow-[#FD8602]/20  hover:shadow-black/10 transition-all duration-500 ease-out border border-black/20 overflow-hidden"
               >
-                {/* Overlay Hover Effect BG */}
-                <div className="absolute inset-0 bg-gradient-to-br from-[#F8F2E8]/40 to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0 pointer-events-none" />
-
                 {/* Learn More Overlay (When Open) */}
                 <div
                   className={[
-                    "absolute inset-0 z-30 flex flex-col rounded-[2rem] p-8 border border-white/20 bg-white/95 backdrop-blur-xl",
-                    "transition-all duration-500 ease-out shadow-inner",
+                    "absolute inset-0 z-30 flex flex-col rounded-2xl p-6 bg-white/85 backdrop-blur-xl",
+                    "transition-all duration-500 ease-out ",
                     isOpen
-                      ? "opacity-100 scale-100 pointer-events-auto"
-                      : "opacity-0 scale-95 pointer-events-none",
+                      ? "opacity-100 scale-100 pointer-events-auto "
+                      : "opacity-0 scale-95 pointer-events-none ",
                   ].join(" ")}
                 >
                   <Button
@@ -384,7 +396,7 @@ export default function Home() {
                       className="group/btn flex items-center gap-2 border-b-2 border-transparent hover:border-[#3d571c] rounded-none p-0 font-sans z-20 hover:bg-transparent text-[#B75922] hover:text-[#3d571c] transition-all font-semibold"
                     >
                       Mehr erfahren
-                      <ArrowUpRight className="w-4 h-4 group-hover/btn:translate-y-1 group-hover/btn:translate-x-1 transition-transform" />
+                      <ArrowUpRight className="w-4 h-4 group-hover/btn:translate-x-1 group-hover/btn:translate-x-1 transition-transform" />
                     </Button>
                   </div>
                 </div>
@@ -396,19 +408,19 @@ export default function Home() {
 
       {/* PROCESS SECTION */}
       <section className="relative z-10 process-section">
-        <div className="bg-[#3d571c] text-white my-12 rounded-2xl mx-4 md:mx-12 xl:mx-24 overflow-hidden shadow-2xl relative">
+        <div className=" text-white my-12 rounded-2xl mx-4 md:mx-12 xl:mx-24 overflow-hidden  relative">
           <div className="flex flex-col xl:flex-row relative z-10 w-full">
             <div className="w-full relative xl:basis-7/12 p-8 md:p-16 lg:p-20">
               <div className="flex flex-col h-full justify-center">
-                <Badge className="bg-white/10 text-white border-white/20  px-2 py-1.5  font-medium hover:bg-[#1F6F50]/15 transition-colors uppercase tracking-[0.2em] rounded-full">
+                <Badge className="bg-[#CDB38E]/20 border-[#CDB38E] mb-4 text-[#ab8c50]  px-2 py-1.5  font-medium  hover:bg-[#CDB38E]/30 transition-colors uppercase tracking-[0.2em] rounded-full">
                   Der Prozess
                 </Badge>
 
-                <h2 className="font-serif text-white text-4xl md:text-5xl lg:text-6xl leading-tight font-silly tracking-tight mb-8 max-w-2xl">
+                <h2 className="font-serif  text-4xl md:text-5xl lg:text-6xl text-[#3d571c] leading-tight font-silly tracking-tight mb-8 max-w-2xl">
                   VOM BRAU ZUR BLÜTE
                 </h2>
 
-                <p className="max-w-xl font-sans text-white/80 text-lg md:text-xl leading-relaxed mb-12 font-light">
+                <p className="max-w-xl font-sans text-black/80 text-lg md:text-xl leading-relaxed mb-12 font-light">
                   Unser einfacher Vier-Schritte-Prozess schafft einen
                   nachhaltigen Kreislauf, der allen zugute kommt.
                 </p>
@@ -419,25 +431,25 @@ export default function Home() {
                     return (
                       <div
                         key={f.title}
-                        className="process-step flex relative items-start p-6 gap-6  rounded-3xl bg-white/5 hover:bg-white/10 border border-white/5 hover:border-white/20 transition-all duration-300 backdrop-blur-sm group"
+                        className="process-step flex relative bg-white items-start p-6 gap-6  rounded-2xl   border border-black/15 hover:border-[#B75922] transition-all duration-300 backdrop-blur-sm group"
                       >
-                        <span className=" absolute left-1/2 top-1/2 text-[#FDC54B] -translate-y-1/2 -translate-x-1/2 text-8xl font-bold opacity-15 font-sans ">
+                        <span className=" absolute group-hover:scale-105 group-hover:text-[#B75922] group-hover:opacity-100 transition-all duration-300 right-0 top-0 text-[#FDC54B]  text-6xl font-bold opacity-35 font-sans ">
                           0{i + 1}
                         </span>
-                        <div className="flex gap-1 shrink-0 w-14 h-14 items-center justify-center rounded-2xl bg-white/10 shadow-inner group-hover:scale-110 group-hover:bg-[#B75922] transition-all duration-500">
+                        <div className="flex gap-1 shrink-0 w-14 h-14 items-center justify-center rounded-2xl  group-hover:scale-105 group-hover:bg-[#B75922] transition-all duration-500">
                           <Icon
                             strokeWidth={1.5}
-                            className="h-7 w-7 text-[#FDC54B] group-hover:text-white transition-colors duration-500"
+                            className="h-7 w-7 text-[#FDC54B]  group-hover:text-white transition-colors duration-500"
                           />
                         </div>
 
                         <div className="flex-1 mt-1">
                           <div className="flex items-center gap-3 mb-2">
-                            <h3 className="font-serif text-white font-silly text-2xl tracking-wide">
+                            <h3 className="font-serif text-[#3d571c] font-silly text-2xl tracking-wide">
                               {f.title}
                             </h3>
                           </div>
-                          <p className="text-base md:text-lg leading-relaxed text-white/70 font-sans font-light">
+                          <p className="text-base md:text-lg leading-relaxed text-black/70 font-sans font-light">
                             {f.desc}
                           </p>
                         </div>
@@ -448,7 +460,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="flex w-full xl:basis-5/12 justify-center items-center p-8 md:p-16 lg:p-20 bg-white  ">
+            <div className="flex w-full xl:basis-5/12 justify-center items-center p-8 md:p-16 lg:p-20   ">
               <div className="w-full max-w-md">
                 <EmailCapture />
               </div>
@@ -458,14 +470,14 @@ export default function Home() {
       </section>
 
       {/* PARTNERS SECTION */}
-      <section className="partners-section flex w-full flex-col py-24 px-6 md:px-12 max-w-[1400px] mx-auto relative z-10">
+      <section className="partners-section flex w-full flex-col py-24  md:px-12 max-w-[1400px] mx-auto relative z-10">
         <div className="text-center flex flex-col items-center mb-16">
           <h2 className="text-3xl md:text-4xl lg:text-5xl tracking-tight font-silly text-[#3d571c] mb-6">
             UNSERE PARTNER
           </h2>
 
           <Badge className="bg-[#CDB38E]/20 border-[#CDB38E] mb-4 text-[#ab8c50]  px-2 py-1.5  font-medium  hover:bg-[#CDB38E]/30 transition-colors uppercase tracking-[0.2em] rounded-full">
-            Der Prozess
+            Partnerschaften
           </Badge>
 
           <div className="w-16 h-1 bg-[#3d571c]/20 rounded-full" />

@@ -45,10 +45,10 @@ export default function EmailCapture() {
         </div>
       ) : (
         <>
-          <Badge className="bg-[#3d571c]/10 text-[#3d571c] border-[#3d571c]/20  px-2 py-1.5  font-medium hover:bg-[#1F6F50]/15 transition-colors uppercase tracking-[0.2em] rounded-full">
+          <Badge className="bg-[#CDB38E]/20 border-[#CDB38E] mb-4 text-[#ab8c50]  px-2 py-1.5  font-medium  hover:bg-[#CDB38E]/30 transition-colors uppercase tracking-[0.2em] rounded-full">
             Newsletter
           </Badge>
-          <h3 className="mt-4 font-sans text-2xl leading-tight text-[#0F172A]">
+          <h3 className="mt-4 font-sans uppercase font-silly text-2xl leading-tight text-[#0F172A]">
             Frühzeitiger Zugang
           </h3>
           <p className="mt-2 text-sm leading-6 text-black/60">
@@ -72,7 +72,7 @@ export default function EmailCapture() {
             <Button
               type="submit"
               disabled={isLoading}
-              className="bg-[#3d571c] w-fit text-white hover:opacity-90"
+              className="bg-[#3d571c] w-fit rounded-xl text-white hover:opacity-90"
             >
               {isLoading ? "Joining..." : "Jetzt anmelden"}
             </Button>
